@@ -10,6 +10,8 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 
 import * as strings from 'GuestUserOverviewWebPartStrings';
 import { GuestUserOverview, IGuestUserOverviewProps } from './components/GuestUserOverview';
+import { ApplicationContext } from '../../util/ApplicationContext';
+import { graphfi, SPFx, ConsistencyLevel, Endpoint } from '@pnp/graph/presets/all'
 
 export interface IGuestUserOverviewWebPartProps {
 }
@@ -17,12 +19,10 @@ export interface IGuestUserOverviewWebPartProps {
 export default class GuestUserOverviewWebPart extends BaseClientSideWebPart<IGuestUserOverviewWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IGuestUserOverviewProps> = React.createElement(
-      GuestUserOverview,
-      {}
-    );
+    const element: React.ReactElement<IGuestUserOverviewProps> = React.createElement(GuestUserOverview, {});
+    const ApplicationWrapper = React.createElement(ApplicationContext.Provider, { value: { SPFxContext: this.context, Graph: graphfi().using(ConsistencyLevel("eventual"), Endpoint("beta"), SPFx(this.context)) } }, element);
 
-    ReactDom.render(element, this.domElement);
+    ReactDom.render(ApplicationWrapper, this.domElement);
   }
 
   protected onDispose(): void {

@@ -25,6 +25,16 @@
       "videoUrl": "",
       "categories": []
     },
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Directory.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "AuditLog.Read.All"
+      }
+    ],
     "features": [
       {
         "title": "guest-user-overview Feature",
