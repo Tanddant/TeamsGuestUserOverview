@@ -20,7 +20,7 @@
     "group": { "default": "Advanced" },
     "title": { "default": "Guest user overview" },
     "description": { "default": "Guest user overview description" },
-    "officeFabricIconFontName": "Page",
+    "officeFabricIconFontName": "ContactCard",
     "properties": {
       "description": "Guest user overview"
     }
