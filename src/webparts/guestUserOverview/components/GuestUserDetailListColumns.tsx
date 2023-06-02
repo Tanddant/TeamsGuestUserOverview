@@ -44,10 +44,15 @@ export const GuestUserDetailListColumns: IColumn[] = [
         ...DefaultColumnn("mail"),
         name: "Email",
     },
-
     {
         ...DefaultColumnn("createdDateTime"),
         name: "Created",
         onRender: (item: IGuestUser) => item.createdDateTime.toLocaleString()
-    }
+    },
+    {
+        ...DefaultColumnn("lastSignInDateTime"),
+        name: "Last sign in",
+        onRender: (item: IGuestUser) => item.signInActivity ? item.signInActivity.lastSignInDateTime.toLocaleString() : "N/A"
+    },
+    
 ]
