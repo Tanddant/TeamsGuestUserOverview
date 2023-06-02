@@ -1,5 +1,10 @@
-import { ActionButton, IPanel, IRefObject, Panel, PanelType, Persona, PersonaSize } from '@fluentui/react';
+import { ActionButton, IPanel, IRefObject, Label, Panel, PanelType, Persona, PersonaSize, Spinner, SpinnerSize, Stack, Text } from '@fluentui/react';
 import * as React from 'react';
+import useUser from '../../../../hooks/UseUser';
+
+const datediff = (first: Date, second: Date) => {
+    return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24));
+}
 
 export interface IGuestUserPanelProps {
     UserId: string;
@@ -7,41 +12,55 @@ export interface IGuestUserPanelProps {
 }
 
 export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (props: React.PropsWithChildren<IGuestUserPanelProps>) => {
-    const ref: IRefObject<IPanel> = React.useRef<IPanel>(null);
+    const { user, isLoading } = useUser(props.UserId);
     //Todo - get user details from Graph API (create useUser hook)
 
     return (
         <Panel
             isOpen={props.UserId != null}
-            componentRef={ref}
             onDismiss={() => props.OnClose()}
             onDismissed={() => props.OnClose()}
             type={PanelType.medium}
         >
-            <Persona text={props.UserId} size={PersonaSize.size72} />
-            <br />
-            <ActionButton iconProps={{ iconName: "BlockContact" }} text='Block user' />
-            <ActionButton iconProps={{ iconName: "Delete" }} text='Delete user' />
 
-            {
-                /** TODO
-                 * Render a panel with the selected user's details
-                 * 
-                 * - If invite is pending, show a button to resend the invite (and get URL for that invite)
-                 * - Sign in activity "/v1.0/auditLogs/signIns" - (timestamp, city/region, perhaps device info, status) (maybe days since last sign in?)
-                 * - Group memberships "/v1.0/groups/{id}/members" - (displayName, mail)
-                 * - Block sign in button
-                 * - Delete user button (only for disabled users)
-                 * - Option to edit display name (often set by users themselves, so not always accurate or useful) - suggest to include (GUEST) in the name
-                 * - Link to Azure Portal (https://aad.portal.azure.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/a4fceeaa-486d-4665-ba6c-2d4ac3c59fef)
-                 * 
-                 * - Maybe show "Manage contact information" form from modern admin center - https://admin.microsoft.com/?auth_upn=tanddant%402v8lc2.onmicrosoft.com&source=applauncher#/users/:/GuestUserDetails/9b792cf7-092e-4d9e-bfb7-64a0c7c726be/Account
-                 * 
-                 */
-            }
+            {isLoading && <Spinner size={SpinnerSize.large} label={"Loading..."} />}
+
+            {!isLoading &&
+                <>
+                    <Persona text={user.displayName} secondaryText={user.mail} size={PersonaSize.size72} />
+                    <br />
+                    <ActionButton iconProps={{ iconName: "BlockContact" }} text='Block user' />
+                    <ActionButton iconProps={{ iconName: "Delete" }} text='Delete user' />
+                    <ActionButton iconProps={{ iconName: "NavigateExternalInline" }} text='Open in Entra' target='_blank' href={`https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/${user.id}`} />
+                    <br />
+                    <Stack>
+                        <Text>Created {datediff(user.createdDateTime, new Date())} day(s) ago ({user.createdDateTime.toLocaleString()})</Text>
+                        {user.signInActivity != null &&
+                            <Text>Last sign on {datediff(user.signInActivity.lastSignInDateTime, new Date())} day(s) ago ({user.signInActivity.lastSignInDateTime.toLocaleString()})</Text>
+                        }
+                        {user.signInActivity == null && <Text>No sign in activity</Text>}
+                    </Stack>
+                    <br />
+
+                    {
+                        /** TODO
+                         * Render a panel with the selected user's details
+                         * 
+                         * - If invite is pending, show a button to resend the invite (and get URL for that invite)
+                         * - Sign in activity "/v1.0/auditLogs/signIns" - (timestamp, city/region, perhaps device info, status) (maybe days since last sign in?)
+                         * - Group memberships "/v1.0/User/{id}/transitiveMemberOf" - (displayName, mail if has)
+                         * - Block sign in button
+                         * - Delete user button (only for disabled users?)
+                         * - Option to edit display name (often set by users themselves, so not always accurate or useful) - suggest to include (GUEST) in the name
+                         * ✅ Link to Azure Portal (https://aad.portal.azure.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/a4fceeaa-486d-4665-ba6c-2d4ac3c59fef)
+                         * 
+                         * - Maybe show "Manage contact information" form from modern admin center - https://admin.microsoft.com/?auth_upn=tanddant%402v8lc2.onmicrosoft.com&source=applauncher#/users/:/GuestUserDetails/9b792cf7-092e-4d9e-bfb7-64a0c7c726be/Account
+                         * 
+                         */
+                    }
 
 
-
+                </>}
 
         </Panel>
     );
