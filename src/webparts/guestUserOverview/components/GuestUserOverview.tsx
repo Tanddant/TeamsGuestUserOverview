@@ -21,7 +21,6 @@ export const GuestUserOverview: React.FunctionComponent<IGuestUserOverviewProps>
     },
   }), []);
 
-
   return (
     <>
       <GuestUserPanel

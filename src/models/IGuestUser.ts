@@ -9,10 +9,12 @@ export interface IGuestUser {
     externalUserState: ExternalUserState;
     mail: string;
     userPrincipalName: string;
+    externalUserStateChangeDateTime: Date;
+    lastPasswordChangeDateTime: Date;
     signInActivity?: {
         lastSignInDateTime: Date;
     }
 
 }
 
-export const IGuestUserSelects = ["accountEnabled", "id", "displayName", "createdDateTime", "externalUserState", "mail", "userPrincipalName", "signInActivity"]
+export const IGuestUserSelects = ["accountEnabled", "id", "displayName", "createdDateTime", "externalUserState", "mail", "userPrincipalName", "signInActivity", "externalUserStateChangeDateTime", "lastPasswordChangeDateTime"]

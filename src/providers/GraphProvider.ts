@@ -6,6 +6,7 @@ export interface IGraphProvider {
     GetGuests(partialResults: (partial?: IGuestUser[]) => void): Promise<IGuestUser[]>;
     GetUserById(Id: string): Promise<IUser>;
     ResendInvitationByUserId(Id: string): Promise<string>;
+    SetAccountStateForUserById(Id: string, AccountState: boolean): Promise<void>;
 }
 
 export class GraphProvider implements IGraphProvider {
@@ -21,6 +22,7 @@ export class GraphProvider implements IGraphProvider {
         try {
             do {
                 if (result == null) {
+                    console.log(await this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").top(100).paged());
                     result = await this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").top(100).paged();
                 } else {
                     result = await result.next();
@@ -30,6 +32,12 @@ export class GraphProvider implements IGraphProvider {
                     user.createdDateTime = new Date(user.createdDateTime as any as string);
                     if (user.signInActivity != null)
                         user.signInActivity.lastSignInDateTime = new Date(user.signInActivity.lastSignInDateTime as any as string);
+
+                    if(user.externalUserStateChangeDateTime != null)
+                        user.externalUserStateChangeDateTime = new Date(user.externalUserStateChangeDateTime as any as string);
+
+                    if(user.lastPasswordChangeDateTime != null)
+                        user.lastPasswordChangeDateTime = new Date(user.lastPasswordChangeDateTime as any as string);
                 }
 
                 users = users.concat(result.value);
@@ -43,14 +51,20 @@ export class GraphProvider implements IGraphProvider {
 
         return users;
     }
-
-
+   
     public async GetUserById(Id: string): Promise<IUser> {
         try {
             const user: IUser = await this.Graph.users.getById(Id).select(...IUserSelects)();
             user.createdDateTime = new Date(user.createdDateTime as any as string);
             if (user.signInActivity != null)
                 user.signInActivity.lastSignInDateTime = new Date(user.signInActivity.lastSignInDateTime as any as string);
+
+            if(user.externalUserStateChangeDateTime != null)
+                user.externalUserStateChangeDateTime = new Date(user.externalUserStateChangeDateTime as any as string);
+
+            if(user.lastPasswordChangeDateTime != null)
+                user.lastPasswordChangeDateTime = new Date(user.lastPasswordChangeDateTime as any as string);
+
             return user;
         } catch (e) {
             alert(e.message)
@@ -70,4 +84,16 @@ export class GraphProvider implements IGraphProvider {
             throw e;
         }
     }
+
+    public async SetAccountStateForUserById(Id: string, AccountState: boolean): Promise<void> {
+        try{
+            await this.Graph.users.getById(Id).update({
+                accountEnabled: AccountState
+            });
+        } catch (e) {
+            alert(e.message)
+            throw e;
+        }
+    }
+
 }

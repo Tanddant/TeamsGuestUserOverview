@@ -3,6 +3,8 @@ import * as React from 'react';
 import useUser from '../../../../hooks/UseUser';
 import { ExternalUserState } from '../../../../enums/ExternalUserState';
 import { InvitationResender } from './NoInvitationAccepted/InvitationResender';
+import { ApplicationContext } from '../../../../util/ApplicationContext';
+
 
 const datediff = (first: Date, second: Date) => {
     return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24));
@@ -15,6 +17,7 @@ export interface IGuestUserPanelProps {
 
 export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (props: React.PropsWithChildren<IGuestUserPanelProps>) => {
     const { user, isLoading } = useUser(props.UserId);
+    const { GraphProvider } = React.useContext(ApplicationContext);
     //Todo - get user details from Graph API (create useUser hook)
 
     return (
@@ -35,16 +38,29 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
 
                     <Persona text={user.displayName} secondaryText={user.mail} size={PersonaSize.size72} />
                     <br />
-                    <ActionButton iconProps={{ iconName: "BlockContact" }} text='Block user' />
+                    <ActionButton iconProps={{ iconName: user.accountEnabled ? "Contact" : "BlockContact" }}
+                        text={user.accountEnabled ? "Block user" : "Unblock user"}
+                        onClick={async () => { await GraphProvider.SetAccountStateForUserById(user.id, !user.accountEnabled); props.OnClose() }} />
                     <ActionButton iconProps={{ iconName: "Delete" }} text='Delete user' />
                     <ActionButton iconProps={{ iconName: "NavigateExternalInline" }} text='Open in Entra' target='_blank' href={`https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/${user.id}`} />
                     <br />
                     <Stack>
                         <Text>Created {datediff(user.createdDateTime, new Date())} day(s) ago ({user.createdDateTime.toLocaleString()})</Text>
-                        {user.signInActivity != null &&
+                        {
+                            user.signInActivity != null &&
                             <Text>Last sign on {datediff(user.signInActivity.lastSignInDateTime, new Date())} day(s) ago ({user.signInActivity.lastSignInDateTime.toLocaleString()})</Text>
                         }
-                        {user.signInActivity == null && <Text>No sign in activity</Text>}
+                        {
+                            user.externalUserStateChangeDateTime != null &&
+                            <Text>Accepted invitation - {user.externalUserStateChangeDateTime.toLocaleString()}</Text>
+                        }
+                        {
+                            user.signInActivity == null && <Text>No sign in activity</Text>
+                        }
+                        {
+                            user.lastPasswordChangeDateTime != null &&
+                            <Text>Last password change {datediff(user.lastPasswordChangeDateTime, new Date())} day(s) ago ({user.lastPasswordChangeDateTime.toLocaleString()}) </Text>
+                        }
                     </Stack>
                     <br />
 
