@@ -1,6 +1,8 @@
-import { ActionButton, IPanel, IRefObject, Label, Panel, PanelType, Persona, PersonaSize, Spinner, SpinnerSize, Stack, Text } from '@fluentui/react';
+import { ActionButton, IPanel, IRefObject, Label, MessageBar, MessageBarType, Panel, PanelType, Persona, PersonaSize, Spinner, SpinnerSize, Stack, Text } from '@fluentui/react';
 import * as React from 'react';
 import useUser from '../../../../hooks/UseUser';
+import { ExternalUserState } from '../../../../enums/ExternalUserState';
+import { InvitationResender } from './NoInvitationAccepted/InvitationResender';
 
 const datediff = (first: Date, second: Date) => {
     return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24));
@@ -27,6 +29,10 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
 
             {!isLoading &&
                 <>
+                    {user.externalUserState == ExternalUserState.PendingAcceptance &&
+                        <InvitationResender UserId={user.id} />
+                    }
+
                     <Persona text={user.displayName} secondaryText={user.mail} size={PersonaSize.size72} />
                     <br />
                     <ActionButton iconProps={{ iconName: "BlockContact" }} text='Block user' />
