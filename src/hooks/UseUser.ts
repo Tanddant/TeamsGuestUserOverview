@@ -5,15 +5,11 @@ import { ApplicationContext } from '../util/ApplicationContext';
 
 export default function useUser(UserId: string) {
     const [user, setUser] = useState<IUser>(null);
-    const { Graph } = React.useContext(ApplicationContext);
+    const { GraphProvider } = React.useContext(ApplicationContext);
 
     useEffect(() => {
         async function fetchData() {
-            const user: IUser = await Graph.users.getById(UserId).select(...IUserSelects)();
-            user.createdDateTime = new Date(user.createdDateTime as any as string);
-            if (user.signInActivity != null)
-                user.signInActivity.lastSignInDateTime = new Date(user.signInActivity.lastSignInDateTime as any as string);
-
+            const user = await GraphProvider.GetUserById(UserId);
             setUser(user);
         }
 

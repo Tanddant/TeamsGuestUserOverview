@@ -11,7 +11,8 @@ import { IReadonlyTheme } from '@microsoft/sp-component-base';
 import * as strings from 'GuestUserOverviewWebPartStrings';
 import { GuestUserOverview, IGuestUserOverviewProps } from './components/GuestUserOverview';
 import { ApplicationContext } from '../../util/ApplicationContext';
-import { graphfi, SPFx, ConsistencyLevel, Endpoint } from '@pnp/graph/presets/all'
+import { graphfi, SPFx, ConsistencyLevel, Endpoint, GraphFI } from '@pnp/graph/presets/all'
+import { GraphProvider } from '../../providers/GraphProvider';
 
 export interface IGuestUserOverviewWebPartProps {
 }
@@ -20,7 +21,8 @@ export default class GuestUserOverviewWebPart extends BaseClientSideWebPart<IGue
 
   public render(): void {
     const element: React.ReactElement<IGuestUserOverviewProps> = React.createElement(GuestUserOverview, {});
-    const ApplicationWrapper = React.createElement(ApplicationContext.Provider, { value: { SPFxContext: this.context, Graph: graphfi().using(ConsistencyLevel("eventual"), Endpoint("beta"), SPFx(this.context)) } }, element);
+    const graph: GraphFI = graphfi().using(ConsistencyLevel("eventual"), Endpoint("beta"), SPFx(this.context))
+    const ApplicationWrapper = React.createElement(ApplicationContext.Provider, { value: { SPFxContext: this.context, Graph: graph, GraphProvider: new GraphProvider(graph) } }, element);
 
     ReactDom.render(ApplicationWrapper, this.domElement);
   }
