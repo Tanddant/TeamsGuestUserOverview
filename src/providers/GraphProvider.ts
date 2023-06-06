@@ -1,22 +1,35 @@
-import { GraphFI, IPagedResult } from "@pnp/graph";
+import { GraphFI, GraphQueryable, IPagedResult, graphGet } from "@pnp/graph";
 import { IGuestUser, IGuestUserSelects } from "../models/IGuestUser";
 import { IUser, IUserSelects } from "../models/IUser";
 import { IGroup, IGroupSelects } from "../models/IGroup";
 import { ParseIUser, ParseIUsers } from "../util/GraphModelHepers";
+import { ISignInEntry, ISignInEntryResponse, ParseSignInEntry } from "../models/ISignInEntry";
+import { BaseComponentContext } from "@microsoft/sp-component-base";
+import { AadHttpClient, MSGraphClientV3 } from "@microsoft/sp-http";
 
 export interface IGraphProvider {
     GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]>;
     GetUserById(Id: string): Promise<IGuestUser>;
     ResendInvitationByUserId(Id: string): Promise<string>;
     SetAccountStateForUserById(Id: string, AccountState: boolean): Promise<void>;
-    GetGroupMembershipsByUserId(Id: string, partialResults?: (partial: IGuestUser[]) => void): Promise<IGroup[]>;
+    GetGroupMembershipsByUserId(Id: string, partialResults?: (partial: IGroup[]) => void): Promise<IGroup[]>;
+    GetSignInHistoryByUserId(Id: string): Promise<ISignInEntry[]>;
 }
 
 export class GraphProvider implements IGraphProvider {
     private Graph: GraphFI;
+    private Context: BaseComponentContext;
+    private MSGraphClient: MSGraphClientV3;
 
-    constructor(Graph: GraphFI) {
+    private async Get_Raw_Client(): Promise<MSGraphClientV3> {
+        if (this.MSGraphClient == null)
+            this.MSGraphClient = await this.Context.msGraphClientFactory.getClient("3");
+        return this.MSGraphClient;
+    }
+
+    constructor(Graph: GraphFI, Context: BaseComponentContext) {
         this.Graph = Graph;
+        this.Context = Context;
     }
 
     public async GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]> {
@@ -60,10 +73,26 @@ export class GraphProvider implements IGraphProvider {
         }
     }
 
-    public async GetGroupMembershipsByUserId(Id: string, partialResults?: (partial: IGuestUser[]) => void): Promise<IGroup[]> {
+    public async GetGroupMembershipsByUserId(Id: string, partialResults?: (partial: IGroup[]) => void): Promise<IGroup[]> {
         try {
             let groups = await this.getAllPagedResults(this.Graph.users.getById(Id).transitiveMemberOf.top(10).select(...IGroupSelects).paged(), partialResults);
             return groups;
+        } catch (e) {
+            alert(e.message)
+            throw e;
+        }
+    }
+
+    public async GetSignInHistoryByUserId(Id: string): Promise<ISignInEntry[]> {
+        const client = await this.Get_Raw_Client();
+        const search = new URLSearchParams();
+        search.append("$filter", "userId eq '" + Id + "'and isInteractive eq true");
+        search.append("$orderby", "createdDateTime desc");
+        search.append("$top", "100");
+
+        try {
+            const res: ISignInEntryResponse = await client.api("/auditLogs/signIns?" + search.toString()).get();
+            return res.value.map((entry) => ParseSignInEntry(entry));
         } catch (e) {
             alert(e.message)
             throw e;

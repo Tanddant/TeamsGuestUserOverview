@@ -22,7 +22,7 @@ export default class GuestUserOverviewWebPart extends BaseClientSideWebPart<IGue
   public render(): void {
     const element: React.ReactElement<IGuestUserOverviewProps> = React.createElement(GuestUserOverview, {});
     const graph: GraphFI = graphfi().using(ConsistencyLevel("eventual"), Endpoint("beta"), SPFx(this.context))
-    const ApplicationWrapper = React.createElement(ApplicationContext.Provider, { value: { SPFxContext: this.context, Graph: graph, GraphProvider: new GraphProvider(graph) } }, element);
+    const ApplicationWrapper = React.createElement(ApplicationContext.Provider, { value: { SPFxContext: this.context, Graph: graph, GraphProvider: new GraphProvider(graph, this.context) } }, element);
 
     ReactDom.render(ApplicationWrapper, this.domElement);
   }

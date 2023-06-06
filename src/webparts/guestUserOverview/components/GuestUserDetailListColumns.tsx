@@ -3,9 +3,9 @@ import * as React from 'react';
 import { Checkbox, IColumn, Icon, Persona, PersonaSize, Toggle } from '@fluentui/react'
 import { IGuestUser } from '../../../models/IGuestUser';
 import { ExternalUserState } from '../../../enums/ExternalUserState';
+import { DefaultColumnn } from '../../../util/TableHelpers';
 
 
-const DefaultColumnn: (key: string) => IColumn = (key: string) => ({ key: key, fieldName: key, name: key, minWidth: 125, isResizable: true });
 const renderIcon = (iconName: string) => <Icon styles={{ root: { fontSize: 20 } }} iconName={iconName} />
 
 export const GuestUserDetailListColumns: IColumn[] = [
@@ -54,5 +54,5 @@ export const GuestUserDetailListColumns: IColumn[] = [
         name: "Last sign in",
         onRender: (item: IGuestUser) => item.signInActivity ? item.signInActivity.lastSignInDateTime.toLocaleString() : "N/A"
     },
-    
+
 ]

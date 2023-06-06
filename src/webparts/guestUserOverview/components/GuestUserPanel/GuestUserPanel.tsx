@@ -5,6 +5,7 @@ import { ExternalUserState } from '../../../../enums/ExternalUserState';
 import { InvitationResender } from './NoInvitationAccepted/InvitationResender';
 import { ApplicationContext } from '../../../../util/ApplicationContext';
 import { GroupMemberships } from './GroupMemberships/GroupMemberships';
+import { RecentSignIns } from './RecentSignIns/RecentSignIns';
 
 
 const datediff = (first: Date, second: Date) => {
@@ -19,7 +20,6 @@ export interface IGuestUserPanelProps {
 export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (props: React.PropsWithChildren<IGuestUserPanelProps>) => {
     const { user, isLoading } = useUser(props.UserId);
     const { GraphProvider } = React.useContext(ApplicationContext);
-
     //Todo - get user details from Graph API (create useUser hook)
 
     return (
@@ -66,6 +66,10 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
 
                         <GroupMemberships UserId={user.id} />
 
+
+                        <RecentSignIns UserId={user.id} />
+
+                        
                         {
                             /** TODO
                              * Render a panel with the selected user's details
