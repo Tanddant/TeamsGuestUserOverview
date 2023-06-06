@@ -1,4 +1,4 @@
-import { ActionButton, IPanel, IRefObject, Label, MessageBar, MessageBarType, Panel, PanelType, Persona, PersonaSize, Spinner, SpinnerSize, Stack, Text } from '@fluentui/react';
+import { ActionButton, IPanel, IPersonaProps, IRefObject, Label, MessageBar, MessageBarType, Panel, PanelType, Persona, PersonaSize, Pivot, PivotItem, Spinner, SpinnerSize, Stack, StackItem, Text } from '@fluentui/react';
 import * as React from 'react';
 import useUser from '../../../../hooks/UseUser';
 import { ExternalUserState } from '../../../../enums/ExternalUserState';
@@ -22,6 +22,17 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
     const { GraphProvider } = React.useContext(ApplicationContext);
     //Todo - get user details from Graph API (create useUser hook)
 
+    function _onRenderTertiaryText(personaProps: IPersonaProps): JSX.Element {
+        return (
+            <div style={{ display: 'flex', marginLeft: '-10px' }}>
+                <ActionButton iconProps={{ iconName: user.accountEnabled ? "Contact" : "BlockContact" }}
+                    text={user.accountEnabled ? "Block user" : "Unblock user"}
+                    onClick={async () => { await GraphProvider.SetAccountStateForUserById(user.id, !user.accountEnabled); props.OnClose() }} />
+                <ActionButton iconProps={{ iconName: "Delete" }} text='Delete user' />
+                <ActionButton iconProps={{ iconName: "NavigateExternalInline" }} text='Open in Entra' target='_blank' href={`https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/${user.id}`} />
+            </div>);
+    }
+
     return (
         <Panel
             isOpen={props.UserId != null}
@@ -39,37 +50,57 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                             <InvitationResender UserId={user.id} />
                         }
 
-                        <Persona text={user.displayName} secondaryText={user.mail} size={PersonaSize.size72} />
-                        <div style={{ display: 'flex' }}>
-                            <ActionButton iconProps={{ iconName: user.accountEnabled ? "Contact" : "BlockContact" }}
-                                text={user.accountEnabled ? "Block user" : "Unblock user"}
-                                onClick={async () => { await GraphProvider.SetAccountStateForUserById(user.id, !user.accountEnabled); props.OnClose() }} />
-                            <ActionButton iconProps={{ iconName: "Delete" }} text='Delete user' />
-                            <ActionButton iconProps={{ iconName: "NavigateExternalInline" }} text='Open in Entra' target='_blank' href={`https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/${user.id}`} />
-                        </div>
-                        <Stack>
-                            <Text>Created {datediff(user.createdDateTime, new Date())} day(s) ago ({user.createdDateTime.toLocaleString()})</Text>
-                            {user.signInActivity != null &&
-                                <Text>Last sign on: {datediff(user.signInActivity.lastSignInDateTime, new Date())} day(s) ago ({user.signInActivity.lastSignInDateTime.toLocaleString()})</Text>
-                            }
+                        <Persona text={user.displayName} secondaryText={user.mail} tertiaryText={'Functions'} onRenderTertiaryText={_onRenderTertiaryText} size={PersonaSize.size72} />
 
-                            {user.signInActivity == null && <Text>No sign in activity</Text>}
+                        <Pivot aria-label="Pivot" style={{ marginTop: 15 }}>
+                            <PivotItem headerText="General" headerButtonProps={{ 'data-order': 1, 'data-title': 'General' }}>
+                                <Stack style={{ marginTop: 15 }}>
+                                    <div style={{ margin: '-12.5px 16px -12.5px -8px' }}>
+                                        <Stack horizontal wrap>
+                                            <StackItem grow={1} style={{ margin: '12px 16px', flex: '1 1 calc(50% - 32px)' }}>
+                                                <Stack>
+                                                    <Text style={{ fontWeight: 'bold' }}>User Created</Text>
+                                                    <Text>{datediff(user.createdDateTime, new Date())} day(s) ago</Text>
+                                                </Stack>
+                                            </StackItem>
+                                            <StackItem grow={1} style={{ margin: '12px 16px', flex: '1 1 calc(50% - 32px)' }}>
+                                                <Stack>
+                                                    <Text style={{ fontWeight: 'bold' }}>Invitation Accepted</Text>
+                                                    <Text>{user.externalUserState == ExternalUserState.Accepted ? datediff(user.externalUserStateChangeDateTime, new Date()) + ' day(s) ago' : 'Not yet accepted'}</Text>
+                                                </Stack>
+                                            </StackItem>
+                                            <StackItem grow={1} style={{ margin: '12px 16px', flex: '1 1 calc(50% - 32px)' }}>
+                                                <Stack>
+                                                    <Text style={{ fontWeight: 'bold' }}>Last sign-in</Text>
+                                                    <Text>{datediff(user.signInActivity.lastSignInDateTime, new Date())} day(s) ago</Text>
+                                                </Stack>
+                                            </StackItem>
+                                            <StackItem grow={1} style={{ margin: '12px 16px', flex: '1 1 calc(50% - 32px)' }}>
+                                                <Stack>
+                                                    <Text style={{ fontWeight: 'bold' }}>Last password change</Text>
+                                                    <Text>{datediff(user.lastPasswordChangeDateTime, new Date())} day(s) ago</Text>
+                                                </Stack>
+                                            </StackItem>
+                                        </Stack>
+                                    </div>
+                                </Stack>
 
-                            {user.externalUserStateChangeDateTime != null && user.externalUserState == ExternalUserState.Accepted &&
-                                <Text>Accepted invitation: {user.externalUserStateChangeDateTime.toLocaleString()}</Text>
-                            }
+                                <div style={{ marginTop: 25 }}>
+                                    <GroupMemberships UserId={user.id} />
+                                </div>
 
-                            {user.lastPasswordChangeDateTime != null &&
-                                <Text>Last password change: {datediff(user.lastPasswordChangeDateTime, new Date())} day(s) ago ({user.lastPasswordChangeDateTime.toLocaleString()}) </Text>
-                            }
-                        </Stack>
-
-                        <GroupMemberships UserId={user.id} />
-
-
-                        <RecentSignIns UserId={user.id} />
-
-                        
+                                <div style={{ marginTop: 25 }}>
+                                    <RecentSignIns UserId={user.id} />
+                                </div>
+                            </PivotItem>
+                            <PivotItem headerText="Contact information" headerButtonProps={{ 'data-order': 2, 'data-title': 'Contact information' }}>
+                                <Stack style={{ marginTop: 15 }}>
+                                    <div style={{ margin: '-12.5px 16px -12.5px -8px' }}>
+                                        <h1>Hejje</h1>
+                                    </div>
+                                </Stack>
+                            </PivotItem>
+                        </Pivot>
                         {
                             /** TODO
                              * Render a panel with the selected user's details

@@ -43,7 +43,7 @@ export const RecentSignIns: React.FunctionComponent<IRecentSignInsProps> = (prop
 
     return (
         <div>
-            <Text variant='xLarge'>Recent sign ins</Text>
+            <Text variant='xLarge'>Sign-in activity</Text>
             {(isLoading || (value.length > 0)) &&
                 <ShimmeredDetailsList
                     compact
