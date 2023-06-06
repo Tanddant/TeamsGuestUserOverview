@@ -4,6 +4,7 @@ import useUser from '../../../../hooks/UseUser';
 import { ExternalUserState } from '../../../../enums/ExternalUserState';
 import { InvitationResender } from './NoInvitationAccepted/InvitationResender';
 import { ApplicationContext } from '../../../../util/ApplicationContext';
+import { GroupMemberships } from './GroupMemberships/GroupMemberships';
 
 
 const datediff = (first: Date, second: Date) => {
@@ -18,6 +19,7 @@ export interface IGuestUserPanelProps {
 export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (props: React.PropsWithChildren<IGuestUserPanelProps>) => {
     const { user, isLoading } = useUser(props.UserId);
     const { GraphProvider } = React.useContext(ApplicationContext);
+
     //Todo - get user details from Graph API (create useUser hook)
 
     return (
@@ -52,16 +54,17 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                             }
 
                             {user.signInActivity == null && <Text>No sign in activity</Text>}
-                            
+
                             {user.externalUserStateChangeDateTime != null && user.externalUserState == ExternalUserState.Accepted &&
                                 <Text>Accepted invitation: {user.externalUserStateChangeDateTime.toLocaleString()}</Text>
                             }
-                            
+
                             {user.lastPasswordChangeDateTime != null &&
                                 <Text>Last password change: {datediff(user.lastPasswordChangeDateTime, new Date())} day(s) ago ({user.lastPasswordChangeDateTime.toLocaleString()}) </Text>
                             }
                         </Stack>
-                        <br />
+
+                        <GroupMemberships UserId={user.id} />
 
                         {
                             /** TODO

@@ -1,13 +1,15 @@
 import { GraphFI, IPagedResult } from "@pnp/graph";
 import { IGuestUser, IGuestUserSelects } from "../models/IGuestUser";
 import { IUser, IUserSelects } from "../models/IUser";
+import { IGroup, IGroupSelects } from "../models/IGroup";
 import { ParseIUser, ParseIUsers } from "../util/GraphModelHepers";
 
 export interface IGraphProvider {
-    GetGuests(partialResults: (partial?: IGuestUser[]) => void): Promise<IGuestUser[]>;
+    GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]>;
     GetUserById(Id: string): Promise<IGuestUser>;
     ResendInvitationByUserId(Id: string): Promise<string>;
     SetAccountStateForUserById(Id: string, AccountState: boolean): Promise<void>;
+    GetGroupMembershipsByUserId(Id: string, partialResults?: (partial: IGuestUser[]) => void): Promise<IGroup[]>;
 }
 
 export class GraphProvider implements IGraphProvider {
@@ -17,7 +19,7 @@ export class GraphProvider implements IGraphProvider {
         this.Graph = Graph;
     }
 
-    public async GetGuests(partialResults: (partial?: IGuestUser[]) => void): Promise<IGuestUser[]> {
+    public async GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]> {
         const result = await this.getAllPagedResults(this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").top(100).paged(), (users) => {
             partialResults(ParseIUsers(users as IGuestUser[]))
         })
@@ -58,6 +60,15 @@ export class GraphProvider implements IGraphProvider {
         }
     }
 
+    public async GetGroupMembershipsByUserId(Id: string, partialResults?: (partial: IGuestUser[]) => void): Promise<IGroup[]> {
+        try {
+            let groups = await this.getAllPagedResults(this.Graph.users.getById(Id).transitiveMemberOf.top(10).select(...IGroupSelects).paged(), partialResults);
+            return groups;
+        } catch (e) {
+            alert(e.message)
+            throw e;
+        }
+    }
 
     private async getAllPagedResults<T>(request: Promise<IPagedResult>, partialResults?: (partialResults: T[]) => void): Promise<T[]> {
         let items: T[] = [];
