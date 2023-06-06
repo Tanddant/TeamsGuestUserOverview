@@ -3,15 +3,15 @@
   "solution": {
     "name": "guest-user-overview-client-side-solution",
     "id": "4a429c92-ca92-4b31-97be-da28ddb9541f",
-    "version": "1.0.0.4",
+    "version": "1.0.0.6",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
     "developer": {
-      "name": "",
-      "websiteUrl": "",
-      "privacyUrl": "",
-      "termsOfUseUrl": "",
+      "name": "@Tanddant \u0026 @jeppesc11",
+      "websiteUrl": "https://github.com/Tanddant/TeamsGuestUserOverview",
+      "privacyUrl": "https://github.com/Tanddant/TeamsGuestUserOverview",
+      "termsOfUseUrl": "https://github.com/Tanddant/TeamsGuestUserOverview",
       "mpnId": "Undefined-1.17.2"
     },
     "metadata": {

@@ -44,16 +44,17 @@ export const RecentSignIns: React.FunctionComponent<IRecentSignInsProps> = (prop
     return (
         <div>
             <Text variant='xLarge'>Recent sign ins</Text>
+            {(isLoading || (value.length > 0)) &&
+                <ShimmeredDetailsList
+                    compact
+                    items={value}
+                    enableShimmer={isLoading}
+                    selectionMode={SelectionMode.none}
+                    columns={columns}
+                />
+            }
 
-            <ShimmeredDetailsList
-                compact
-                items={value}
-                enableShimmer={isLoading}
-                selectionMode={SelectionMode.none}
-                columns={columns}
-            />
-
-            {!isLoading && value.length == 0 && <Text>No sign in activity</Text>}
+            {!isLoading && value.length == 0 && <div><Text>No sign in activity</Text></div>}
         </div>
     );
 };

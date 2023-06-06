@@ -13,6 +13,7 @@ import { GuestUserOverview, IGuestUserOverviewProps } from './components/GuestUs
 import { ApplicationContext } from '../../util/ApplicationContext';
 import { graphfi, SPFx, ConsistencyLevel, Endpoint, GraphFI } from '@pnp/graph/presets/all'
 import { GraphProvider } from '../../providers/GraphProvider';
+import { initializeIcons } from 'office-ui-fabric-react';
 
 export interface IGuestUserOverviewWebPartProps {
 }
@@ -25,6 +26,10 @@ export default class GuestUserOverviewWebPart extends BaseClientSideWebPart<IGue
     const ApplicationWrapper = React.createElement(ApplicationContext.Provider, { value: { SPFxContext: this.context, Graph: graph, GraphProvider: new GraphProvider(graph, this.context) } }, element);
 
     ReactDom.render(ApplicationWrapper, this.domElement);
+  }
+
+  protected async onInit(): Promise<void> {
+    initializeIcons();
   }
 
   protected onDispose(): void {
