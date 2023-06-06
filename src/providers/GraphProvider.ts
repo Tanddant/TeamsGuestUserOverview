@@ -1,10 +1,11 @@
 import { GraphFI, IPagedResult } from "@pnp/graph";
 import { IGuestUser, IGuestUserSelects } from "../models/IGuestUser";
 import { IUser, IUserSelects } from "../models/IUser";
+import { ParseIUser, ParseIUsers } from "../util/GraphModelHepers";
 
 export interface IGraphProvider {
     GetGuests(partialResults: (partial?: IGuestUser[]) => void): Promise<IGuestUser[]>;
-    GetUserById(Id: string): Promise<IUser>;
+    GetUserById(Id: string): Promise<IGuestUser>;
     ResendInvitationByUserId(Id: string): Promise<string>;
     SetAccountStateForUserById(Id: string, AccountState: boolean): Promise<void>;
 }
@@ -17,60 +18,22 @@ export class GraphProvider implements IGraphProvider {
     }
 
     public async GetGuests(partialResults: (partial?: IGuestUser[]) => void): Promise<IGuestUser[]> {
-        let users: IGuestUser[] = [];
-        let result: IPagedResult = null;
-        try {
-            do {
-                if (result == null) {
-                    result = await this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").top(100).paged();
-                } else {
-                    result = await result.next();
-                }
+        const result = await this.getAllPagedResults(this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").top(100).paged(), (users) => {
+            partialResults(ParseIUsers(users as IGuestUser[]))
+        })
 
-                for (let user of result.value) {
-                    user.createdDateTime = new Date(user.createdDateTime as any as string);
-                    if (user.signInActivity != null)
-                        user.signInActivity.lastSignInDateTime = new Date(user.signInActivity.lastSignInDateTime as any as string);
-
-                    if(user.externalUserStateChangeDateTime != null)
-                        user.externalUserStateChangeDateTime = new Date(user.externalUserStateChangeDateTime as any as string);
-
-                    if(user.lastPasswordChangeDateTime != null)
-                        user.lastPasswordChangeDateTime = new Date(user.lastPasswordChangeDateTime as any as string);
-                }
-
-                users = users.concat(result.value);
-                if (partialResults != null)
-                    partialResults(users);
-            } while (result.hasNext);
-        } catch (e) {
-            alert(e.message)
-            throw e;
-        }
-
-        return users;
+        return ParseIUsers(result as IGuestUser[]);
     }
-   
-    public async GetUserById(Id: string): Promise<IUser> {
+
+    public async GetUserById(Id: string): Promise<IGuestUser> {
         try {
-            const user: IUser = await this.Graph.users.getById(Id).select(...IUserSelects)();
-            user.createdDateTime = new Date(user.createdDateTime as any as string);
-            if (user.signInActivity != null)
-                user.signInActivity.lastSignInDateTime = new Date(user.signInActivity.lastSignInDateTime as any as string);
+            const user: IGuestUser = await this.Graph.users.getById(Id).select(...IUserSelects)();
 
-            if(user.externalUserStateChangeDateTime != null)
-                user.externalUserStateChangeDateTime = new Date(user.externalUserStateChangeDateTime as any as string);
-
-            if(user.lastPasswordChangeDateTime != null)
-                user.lastPasswordChangeDateTime = new Date(user.lastPasswordChangeDateTime as any as string);
-
-            return user;
+            return ParseIUser(user);
         } catch (e) {
             alert(e.message)
             throw e;
         }
-
-
     }
 
     public async ResendInvitationByUserId(Id: string): Promise<string> {
@@ -85,7 +48,7 @@ export class GraphProvider implements IGraphProvider {
     }
 
     public async SetAccountStateForUserById(Id: string, AccountState: boolean): Promise<void> {
-        try{
+        try {
             await this.Graph.users.getById(Id).update({
                 accountEnabled: AccountState
             });
@@ -95,4 +58,27 @@ export class GraphProvider implements IGraphProvider {
         }
     }
 
+
+    private async getAllPagedResults<T>(request: Promise<IPagedResult>, partialResults?: (partialResults: T[]) => void): Promise<T[]> {
+        let items: T[] = [];
+        let result: IPagedResult;
+        try {
+            do {
+                if (result == null) {
+                    result = await request;
+                } else {
+                    result = await result.next();
+                }
+
+                items = items.concat(result.value);
+                if (partialResults != null)
+                    partialResults(items);
+            } while (result.hasNext);
+
+        } catch (e) {
+            alert(e.message)
+            throw e;
+        }
+        return items;
+    }
 }
