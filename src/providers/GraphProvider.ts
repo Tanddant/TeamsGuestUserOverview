@@ -22,7 +22,6 @@ export class GraphProvider implements IGraphProvider {
         try {
             do {
                 if (result == null) {
-                    console.log(await this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").top(100).paged());
                     result = await this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").top(100).paged();
                 } else {
                     result = await result.next();
