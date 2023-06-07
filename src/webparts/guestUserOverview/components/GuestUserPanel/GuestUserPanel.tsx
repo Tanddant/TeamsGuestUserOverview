@@ -42,17 +42,16 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
 
             {!isLoading &&
                 <>
-                    <Stack tokens={{ childrenGap: 5 }}>
+                    <Stack tokens={{ childrenGap: 25 }}>
                         {user.externalUserState == ExternalUserState.PendingAcceptance &&
                             <InvitationResender UserId={user.id} />
                         }
 
-                        <Persona text={user.displayName} secondaryText={user.mail} tertiaryText={'Functions'} onRenderTertiaryText={_onRenderTertiaryText} size={PersonaSize.size72} />
+                        <Persona text={user.displayName} secondaryText={user.mail}  onRenderTertiaryText={_onRenderTertiaryText} size={PersonaSize.size72} />
 
-                        <Pivot aria-label="Pivot" style={{ marginTop: 15 }}>
+                        <Pivot aria-label="Pivot" >
                             <PivotItem headerText="General" headerButtonProps={{ 'data-order': 1, 'data-title': 'General' }}>
                                 <Stack tokens={{ childrenGap: 25 }}>
-
 
 
                                     <div style={{ display: 'grid', gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 10 }}>
@@ -76,23 +75,6 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                                 </Stack>
                             </PivotItem>
                         </Pivot>
-                        {
-                            /** TODO
-                             * Render a panel with the selected user's details
-                             * 
-                             * - If invite is pending, show a button to resend the invite (and get URL for that invite)
-                             * - Sign in activity "/v1.0/auditLogs/signIns" - (timestamp, city/region, perhaps device info, status) (maybe days since last sign in?)
-                             * - Group memberships "/v1.0/User/{id}/transitiveMemberOf" - (displayName, mail if has)
-                             * - Block sign in button
-                             * - Delete user button (only for disabled users?)
-                             * - Option to edit display name (often set by users themselves, so not always accurate or useful) - suggest to include (GUEST) in the name
-                             * ✅ Link to Azure Portal (https://aad.portal.azure.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/a4fceeaa-486d-4665-ba6c-2d4ac3c59fef)
-                             * 
-                             * - Maybe show "Manage contact information" form from modern admin center - https://admin.microsoft.com/?auth_upn=tanddant%402v8lc2.onmicrosoft.com&source=applauncher#/users/:/GuestUserDetails/9b792cf7-092e-4d9e-bfb7-64a0c7c726be/Account
-                             * 
-                             */
-                        }
-
                     </Stack>
                 </>}
 

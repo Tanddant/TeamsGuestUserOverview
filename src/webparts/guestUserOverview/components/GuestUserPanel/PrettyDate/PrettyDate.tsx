@@ -33,7 +33,7 @@ export const PrettyDate: React.FunctionComponent<IPrettyDateProps> = (props: Rea
         <>
 
             <TooltipHost
-                content={props.date ? props.date.toLocaleString() : "N/A"}
+                content={props.date && props.override == null ? props.date.toLocaleString() : "N/A"}
                 id={tooltipId}
                 calloutProps={{ gapSpace: 0 }}
             >
