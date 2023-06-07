@@ -4,9 +4,34 @@ import { Checkbox, IColumn, Icon, Persona, PersonaSize, Toggle } from '@fluentui
 import { IGuestUser } from '../../../models/IGuestUser';
 import { ExternalUserState } from '../../../enums/ExternalUserState';
 import { DefaultColumnn } from '../../../util/TableHelpers';
+import { PrettyDate } from './GuestUserPanel/PrettyDate/PrettyDate';
+import { datediff } from '../../../util/DateHelpers';
 
+enum Colors {
+    Red = "#f7665e",
+    Yellow = "#f7f29b",
+    Green = "#bbdabb",
+    Orange = "#f2c293"
+}
 
 const renderIcon = (iconName: string) => <Icon styles={{ root: { fontSize: 20 } }} iconName={iconName} />
+const getLastSignInColorCode: (date: Date) => string = (date: Date) => {
+    if (date == null) return Colors.Orange;
+    const diff = datediff(date, new Date());
+    if (diff > 90) return Colors.Red;
+    if (diff > 30) return Colors.Yellow;
+    return Colors.Green;
+}
+
+export interface IPillProps { color: string }
+
+export const Pill: React.FunctionComponent<IPillProps> = (props: React.PropsWithChildren<IPillProps>) => {
+    return (
+        <div style={{ backgroundColor: props.color, height: "100%", borderRadius: "25px", width: "100%", textAlign: 'center', display: 'grid', placeItems: "center" }}>
+            {props.children}
+        </div>
+    );
+};
 
 export const GuestUserDetailListColumns: IColumn[] = [
     {
@@ -43,16 +68,17 @@ export const GuestUserDetailListColumns: IColumn[] = [
     {
         ...DefaultColumnn("mail"),
         name: "Email",
+        minWidth: 250,
     },
     {
         ...DefaultColumnn("createdDateTime"),
         name: "Created",
-        onRender: (item: IGuestUser) => item.createdDateTime.toLocaleString()
+        onRender: (item: IGuestUser) => <PrettyDate date={item.createdDateTime} />
     },
     {
         ...DefaultColumnn("lastSignInDateTime"),
         name: "Last sign in",
-        onRender: (item: IGuestUser) => item.signInActivity ? item.signInActivity.lastSignInDateTime.toLocaleString() : "N/A"
+        onRender: (item: IGuestUser) => <Pill color={getLastSignInColorCode(item.signInActivity?.lastSignInDateTime)}><PrettyDate date={item.signInActivity?.lastSignInDateTime} /></Pill>
     },
-
 ]
+
