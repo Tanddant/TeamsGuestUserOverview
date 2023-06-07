@@ -1,4 +1,4 @@
-import { Stack, Text, TooltipHost } from '@fluentui/react';
+import { DirectionalHint, Stack, Text, TooltipHost } from '@fluentui/react';
 import { useId } from '@fluentui/react-hooks';
 import * as React from 'react';
 import { PrettyPrintDate, datediff } from '../../../../../util/DateHelpers';
@@ -24,6 +24,7 @@ export const PrettyDate: React.FunctionComponent<IPrettyDateProps> = (props: Rea
                 content={props.date && props.override == null ? props.date.toLocaleString() : "N/A"}
                 id={tooltipId}
                 calloutProps={{ gapSpace: 0 }}
+                directionalHint={DirectionalHint.topLeftEdge}
 
             >
                 <Stack>

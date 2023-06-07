@@ -17,7 +17,7 @@ Features include:
 - [x] See their sign in history
 - [x] Block/unblock guest users
 - [X] Open their profile in Entra
-- [ ] Open AAD groups in Entra
+- [X] Open AAD groups in Entra
 - [ ] Delete users
 - [X] Get a quick indication of which users are active and which are not via simple color coding
 - [ ] Edit the users profile information

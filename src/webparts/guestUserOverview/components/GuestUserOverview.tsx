@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styles from './GuestUserOverview.module.scss';
 import useGuests from '../../../hooks/UseGuests';
-import { DetailsList, DetailsListLayoutMode, SelectionMode, ShimmeredDetailsList, Spinner, Selection, Panel } from '@fluentui/react';
-import { GuestUserDetailListColumns } from './GuestUserDetailListColumns';
+import { DetailsList, DetailsListLayoutMode, SelectionMode, ShimmeredDetailsList, Spinner, Selection, Panel, SearchBox } from '@fluentui/react';
+import { GuestUserDetailListColumns, _onRenderRow } from './GuestUserDetailListColumns';
 import { IGuestUser } from '../../../models/IGuestUser';
 import { GuestUserPanel } from './GuestUserPanel/GuestUserPanel';
 
@@ -39,6 +39,7 @@ export const GuestUserOverview: React.FunctionComponent<IGuestUserOverviewProps>
         selection={selection}
         selectionPreservedOnEmptyClick={true}
         selectionMode={SelectionMode.single}
+        onRenderRow={_onRenderRow}
       />
     </>
   );

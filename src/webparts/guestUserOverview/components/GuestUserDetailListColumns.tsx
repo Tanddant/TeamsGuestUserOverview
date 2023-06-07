@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import { Checkbox, IColumn, Icon, Persona, PersonaSize, Toggle } from '@fluentui/react'
+import { Checkbox, DetailsRow, IColumn, IDetailsListProps, IDetailsRowStyles, Icon, Persona, PersonaSize, Toggle } from '@fluentui/react'
 import { IGuestUser } from '../../../models/IGuestUser';
 import { ExternalUserState } from '../../../enums/ExternalUserState';
 import { DefaultColumnn } from '../../../util/TableHelpers';
 import { PrettyDate } from './GuestUserPanel/PrettyDate/PrettyDate';
 import { datediff } from '../../../util/DateHelpers';
 
-enum Colors {
+enum Color {
     Red = "#f7665e",
     Yellow = "#f7f29b",
     Green = "#bbdabb",
@@ -16,21 +16,33 @@ enum Colors {
 
 const renderIcon = (iconName: string) => <Icon styles={{ root: { fontSize: 20 } }} iconName={iconName} />
 const getLastSignInColorCode: (date: Date) => string = (date: Date) => {
-    if (date == null) return Colors.Orange;
+    if (date == null) return Color.Orange;
     const diff = datediff(date, new Date());
-    if (diff > 90) return Colors.Red;
-    if (diff > 30) return Colors.Yellow;
-    return Colors.Green;
+    if (diff > 90) return Color.Red;
+    if (diff > 30) return Color.Yellow;
+    return Color.Green;
 }
 
 export interface IPillProps { color: string }
 
 export const Pill: React.FunctionComponent<IPillProps> = (props: React.PropsWithChildren<IPillProps>) => {
     return (
-        <div style={{ backgroundColor: props.color, height: "100%", borderRadius: "25px", width: "100%", textAlign: 'center', display: 'grid', placeItems: "center" }}>
+        <div style={{ backgroundColor: props.color, borderColor: "lightgrey", borderWidth: 1, borderStyle: "solid", height: "100%", borderRadius: "25px", width: "100%", textAlign: 'center', display: 'grid', placeItems: "center" }}>
             {props.children}
         </div>
     );
+};
+
+export const _onRenderRow: IDetailsListProps['onRenderRow'] = props => {
+    const customStyles: Partial<IDetailsRowStyles> = {};
+    if (props) {
+        if ((props.item as IGuestUser).accountEnabled === false) {
+            customStyles.root = { backgroundColor: Color.Red };
+        }
+
+        return <DetailsRow {...props} styles={customStyles} />;
+    }
+    return null;
 };
 
 export const GuestUserDetailListColumns: IColumn[] = [

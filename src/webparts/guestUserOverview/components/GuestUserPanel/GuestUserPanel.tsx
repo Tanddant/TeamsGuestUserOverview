@@ -48,11 +48,11 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                             <InvitationResender UserId={user.id} />
                         }
 
-                        <Persona text={user.displayName} secondaryText={user.mail}  onRenderTertiaryText={_onRenderTertiaryText} size={PersonaSize.size72} />
+                        <Persona text={user.displayName} secondaryText={user.mail} onRenderTertiaryText={_onRenderTertiaryText} size={PersonaSize.size72} />
 
                         <Pivot aria-label="Pivot" >
                             <PivotItem headerText="General" headerButtonProps={{ 'data-order': 1, 'data-title': 'General' }}>
-                                <Stack tokens={{ childrenGap: 25 }}>
+                                <Stack tokens={{ childrenGap: 25 }} styles={{ root: { marginTop: 15 } }}>
 
 
                                     <div style={{ display: 'grid', gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 10 }}>

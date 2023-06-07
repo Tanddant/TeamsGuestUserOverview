@@ -33,11 +33,17 @@ export class GraphProvider implements IGraphProvider {
     }
 
     public async GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]> {
-        const result = await this.getAllPagedResults(this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").top(100).paged(), (users) => {
-            partialResults(ParseIUsers(users as IGuestUser[]))
-        })
+        try {
+            const result = await this.getAllPagedResults(this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").top(100).paged(), (users) => {
+                partialResults(ParseIUsers(users as IGuestUser[]))
+            })
 
-        return ParseIUsers(result as IGuestUser[]);
+            return ParseIUsers(result as IGuestUser[]);
+
+        } catch (e) {
+            alert(e.message)
+            throw e;
+        }
     }
 
     public async GetUserById(Id: string): Promise<IUser> {
@@ -75,7 +81,7 @@ export class GraphProvider implements IGraphProvider {
 
     public async GetGroupMembershipsByUserId(Id: string, partialResults?: (partial: IGroup[]) => void): Promise<IGroup[]> {
         try {
-            let groups = await this.getAllPagedResults(this.Graph.users.getById(Id).transitiveMemberOf.top(10).select(...IGroupSelects).paged(), partialResults);
+            let groups = await this.getAllPagedResults(this.Graph.users.getById(Id).transitiveMemberOf.top(100).select(...IGroupSelects).paged(), partialResults);
             return groups;
         } catch (e) {
             alert(e.message)
