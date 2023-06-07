@@ -15,9 +15,9 @@
   "dependencies": {
     "@fluentui/react": "^7.199.1",
     "@microsoft/generator-sharepoint": "1.17.2",
-    "@microsoft/sp-http": "1.17.2",
     "@microsoft/sp-component-base": "1.17.2",
     "@microsoft/sp-core-library": "1.17.2",
+    "@microsoft/sp-http": "1.17.2",
     "@microsoft/sp-lodash-subset": "1.17.2",
     "@microsoft/sp-office-ui-fabric-core": "1.17.2",
     "@microsoft/sp-property-pane": "1.17.2",
