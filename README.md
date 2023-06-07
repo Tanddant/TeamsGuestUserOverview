@@ -1,5 +1,7 @@
 # Guest user overview
 
+> Beware this use the Azure Active Directory reporting API, if you have an  Office 365 E3/E5 you do not have this license, you'll need at least a Microsoft 365 E3/E5 which for some reason is different ([see here](https://learn.microsoft.com/en-us/answers/questions/1061639/graph-apis-which-require-p1-p2-license-are-failing))
+
 ## Summary
 
 This is a lightweight admin tool to get an overview of guest users in your tenant.
@@ -17,7 +19,7 @@ Features include:
 - [X] Open their profile in Entra
 - [ ] Open AAD groups in Entra
 - [ ] Delete users
-- [ ] Get a quick indication of which users are active and which are not via simple color coding
+- [X] Get a quick indication of which users are active and which are not via simple color coding
 - [ ] Edit the users profile information
 
 ![Sample](assets/DemoGif.gif)
