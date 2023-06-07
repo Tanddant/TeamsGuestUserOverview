@@ -10,7 +10,7 @@ export const GroupMemberships: React.FunctionComponent<IGroupMembershipsProps> =
     const { isLoading, value } = useGroupMemberships(props.UserId);
     const wrapperStyles = { display: 'flex' };
     return (
-        <>
+        <div>
             <Text variant='xLarge'>Groups</Text>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(175px, 1fr))", gap: 10 }}>
                 {value.map((group) => { return <Persona text={group.displayName} size={PersonaSize.size40} /> })}
@@ -27,6 +27,6 @@ export const GroupMemberships: React.FunctionComponent<IGroupMembershipsProps> =
                 })}
             </div>
             {!isLoading && value.length == 0 && <Text>No group memberships.</Text>}
-        </>
+        </div>
     );
 };

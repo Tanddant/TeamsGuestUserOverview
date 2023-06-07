@@ -6,11 +6,8 @@ import { InvitationResender } from './NoInvitationAccepted/InvitationResender';
 import { ApplicationContext } from '../../../../util/ApplicationContext';
 import { GroupMemberships } from './GroupMemberships/GroupMemberships';
 import { RecentSignIns } from './RecentSignIns/RecentSignIns';
+import { PrettyDate } from './PrettyDate/PrettyDate';
 
-
-const datediff = (first: Date, second: Date) => {
-    return Math.round((second.getTime() - first.getTime()) / (1000 * 60 * 60 * 24));
-}
 
 export interface IGuestUserPanelProps {
     UserId: string;
@@ -54,44 +51,22 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
 
                         <Pivot aria-label="Pivot" style={{ marginTop: 15 }}>
                             <PivotItem headerText="General" headerButtonProps={{ 'data-order': 1, 'data-title': 'General' }}>
-                                <Stack style={{ marginTop: 15 }}>
-                                    <div style={{ margin: '-12.5px 16px -12.5px -8px' }}>
-                                        <Stack horizontal wrap>
-                                            <StackItem grow={1} style={{ margin: '12px 16px', flex: '1 1 calc(50% - 32px)' }}>
-                                                <Stack>
-                                                    <Text style={{ fontWeight: 'bold' }}>User Created</Text>
-                                                    <Text>{datediff(user.createdDateTime, new Date())} day(s) ago</Text>
-                                                </Stack>
-                                            </StackItem>
-                                            <StackItem grow={1} style={{ margin: '12px 16px', flex: '1 1 calc(50% - 32px)' }}>
-                                                <Stack>
-                                                    <Text style={{ fontWeight: 'bold' }}>Invitation Accepted</Text>
-                                                    <Text>{user.externalUserState == ExternalUserState.Accepted ? datediff(user.externalUserStateChangeDateTime, new Date()) + ' day(s) ago' : 'Not yet accepted'}</Text>
-                                                </Stack>
-                                            </StackItem>
-                                            <StackItem grow={1} style={{ margin: '12px 16px', flex: '1 1 calc(50% - 32px)' }}>
-                                                <Stack>
-                                                    <Text style={{ fontWeight: 'bold' }}>Last sign-in</Text>
-                                                    <Text>{datediff(user.signInActivity.lastSignInDateTime, new Date())} day(s) ago</Text>
-                                                </Stack>
-                                            </StackItem>
-                                            <StackItem grow={1} style={{ margin: '12px 16px', flex: '1 1 calc(50% - 32px)' }}>
-                                                <Stack>
-                                                    <Text style={{ fontWeight: 'bold' }}>Last password change</Text>
-                                                    <Text>{datediff(user.lastPasswordChangeDateTime, new Date())} day(s) ago</Text>
-                                                </Stack>
-                                            </StackItem>
-                                        </Stack>
+                                <Stack tokens={{ childrenGap: 25 }}>
+
+
+
+                                    <div style={{ display: 'grid', gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 10 }}>
+                                        <PrettyDate date={user.createdDateTime} label='User Created' />
+                                        <PrettyDate date={user.externalUserStateChangeDateTime} label='Invitation Accepted' override={user.externalUserState == ExternalUserState.Accepted ? null : "Not yet accepted"} />
+                                        <PrettyDate date={user.signInActivity?.lastSignInDateTime} label='Last sign-in' />
+                                        <PrettyDate date={user.lastPasswordChangeDateTime} label='Last password change' />
                                     </div>
-                                </Stack>
 
-                                <div style={{ marginTop: 25 }}>
                                     <GroupMemberships UserId={user.id} />
-                                </div>
 
-                                <div style={{ marginTop: 25 }}>
                                     <RecentSignIns UserId={user.id} />
-                                </div>
+
+                                </Stack>
                             </PivotItem>
                             <PivotItem headerText="Contact information" headerButtonProps={{ 'data-order': 2, 'data-title': 'Contact information' }}>
                                 <Stack style={{ marginTop: 15 }}>
