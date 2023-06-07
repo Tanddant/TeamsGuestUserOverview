@@ -9,7 +9,7 @@ import { AadHttpClient, MSGraphClientV3 } from "@microsoft/sp-http";
 
 export interface IGraphProvider {
     GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]>;
-    GetUserById(Id: string): Promise<IGuestUser>;
+    GetUserById(Id: string): Promise<IUser>;
     ResendInvitationByUserId(Id: string): Promise<string>;
     SetAccountStateForUserById(Id: string, AccountState: boolean): Promise<void>;
     GetGroupMembershipsByUserId(Id: string, partialResults?: (partial: IGroup[]) => void): Promise<IGroup[]>;
@@ -40,11 +40,11 @@ export class GraphProvider implements IGraphProvider {
         return ParseIUsers(result as IGuestUser[]);
     }
 
-    public async GetUserById(Id: string): Promise<IGuestUser> {
+    public async GetUserById(Id: string): Promise<IUser> {
         try {
-            const user: IGuestUser = await this.Graph.users.getById(Id).select(...IUserSelects)();
+            const user: IUser = await this.Graph.users.getById(Id).select(...IUserSelects)();
 
-            return ParseIUser(user);
+            return ParseIUser(user) as IUser;
         } catch (e) {
             alert(e.message)
             throw e;
