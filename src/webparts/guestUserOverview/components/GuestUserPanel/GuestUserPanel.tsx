@@ -7,6 +7,7 @@ import { ApplicationContext } from '../../../../util/ApplicationContext';
 import { GroupMemberships } from './GroupMemberships/GroupMemberships';
 import { RecentSignIns } from './RecentSignIns/RecentSignIns';
 import { PrettyDate } from './PrettyDate/PrettyDate';
+import { UserDetails } from './UserInformation/UserDetails';
 
 
 export interface IGuestUserPanelProps {
@@ -69,9 +70,7 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                             </PivotItem>
                             <PivotItem headerText="Contact information" headerButtonProps={{ 'data-order': 2, 'data-title': 'Contact information' }}>
                                 <Stack style={{ marginTop: 15 }}>
-                                    <div style={{ margin: '-12.5px 16px -12.5px -8px' }}>
-                                        <h1>Hejje</h1>
-                                    </div>
+                                    <UserDetails UserId={user.id} />
                                 </Stack>
                             </PivotItem>
                         </Pivot>
