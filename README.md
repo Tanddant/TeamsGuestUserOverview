@@ -1,8 +1,10 @@
-# guest-user-overview
+# Guest user overview
 
 ## Summary
 
 This is a lightweight admin tool to get an overview of guest users in your tenant.
+
+The app was built during the [HackTogether: The Microsoft Teams Global Hack](https://aka.ms/hack-together-teams), as a entry
 
 Features include:
 
