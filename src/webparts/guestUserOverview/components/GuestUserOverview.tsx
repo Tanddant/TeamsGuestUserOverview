@@ -31,6 +31,7 @@ export const GuestUserOverview: React.FunctionComponent<IGuestUserOverviewProps>
         UserId={selectedUserId}
       />
 
+      <Text variant='xLarge'>Guest user count: {Guests.length}</Text>
       <ShimmeredDetailsList
         items={Guests}
         columns={GuestUserDetailListColumns}

@@ -34,7 +34,7 @@ export class GraphProvider implements IGraphProvider {
 
     public async GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]> {
         try {
-            const result = await this.getAllPagedResults(this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").orderBy("displayName").top(100).paged(), (users) => {
+            const result = await this.getAllPagedResults(this.Graph.users.select(...IGuestUserSelects).filter("userType eq 'Guest'").orderBy("displayName").top(1).paged(), (users) => {
                 partialResults(ParseIUsers(users as IGuestUser[]))
             })
 
