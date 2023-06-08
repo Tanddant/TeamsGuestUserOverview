@@ -8,6 +8,7 @@ import { BaseComponentContext } from "@microsoft/sp-component-base";
 import { AadHttpClient, MSGraphClientV3 } from "@microsoft/sp-http";
 
 export interface IGraphProvider {
+    UpdateIUser(user: any): Promise<void>;
     GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]>;
     GetUserById(Id: string): Promise<IUser>;
     ResendInvitationByUserId(Id: string): Promise<string>;
@@ -30,6 +31,31 @@ export class GraphProvider implements IGraphProvider {
     constructor(Graph: GraphFI, Context: BaseComponentContext) {
         this.Graph = Graph;
         this.Context = Context;
+    }
+
+
+    public async UpdateIUser(user: IUser): Promise<void>{
+        try {
+            const result = await this.Graph.users.getById(user.id).update({
+                givenName: user?.givenName,
+                surname: user?.surname,
+                displayName: user?.displayName,
+                jobTitle: user?.jobTitle == '' ? null : user?.jobTitle,
+                department: user?.department,
+                officeLocation: user?.officeLocation,
+                businessPhones: user?.businessPhones,
+                faxNumber: user?.faxNumber,
+                mobilePhone: user?.mobilePhone,
+                streetAddress: user?.streetAddress,
+                city: user?.city,
+                state: user?.state,
+                postalCode: user?.postalCode,
+                country: user?.country
+            });
+        } catch (e) {
+            alert(e.message)
+            throw e;
+        }
     }
 
     public async GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]> {

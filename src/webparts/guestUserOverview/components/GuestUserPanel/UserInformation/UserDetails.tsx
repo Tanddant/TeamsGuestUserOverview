@@ -4,27 +4,31 @@ import { ActionButton, DetailsList, IColumn, Label, Link, SelectionMode, Shimmer
 import useUser from "../../../../../hooks/UseUser";
 import { useBoolean } from "@fluentui/react-hooks";
 import { UpdateUserDetails } from "./UpdateUserDetails";
+import { ApplicationContext } from "../../../../../util/ApplicationContext";
+import { useState } from "react";
 
 export interface IUserDetailsProps {
     UserId: string;
 }
 
 export const UserDetails: React.FunctionComponent<IUserDetailsProps> = (props: React.PropsWithChildren<IUserDetailsProps>) => {
-    const { isLoading, user } = useUser(props.UserId);
+    const { isLoading, user, reload } = useUser(props.UserId);
     const [isOpen, { setTrue: openPanel, setFalse: dismissPanel }] = useBoolean(false);
-
+    
     const firstName = user?.displayName?.split(' ')[0];
     const lastName = user?.displayName?.replace(firstName, '')?.trim();
     const organization = user?.mail?.split('@')[1]?.split('.')[0];
 
-    console.log(user);
+    const _onDismiss = () => {
+        dismissPanel();
+        reload(); // Wont reload?
+    }
 
     return (
         <div>
             {isLoading &&
                 <>
-                    <Spinner size={SpinnerSize.large} />
-                    <Label style={{ textAlign: 'center' }}>Loading...</Label>
+                    <Spinner size={SpinnerSize.large} label="Loading..."/>
                 </>
             }
 
@@ -91,7 +95,7 @@ export const UserDetails: React.FunctionComponent<IUserDetailsProps> = (props: R
             }
             {
                 isOpen &&
-                <UpdateUserDetails isOpen={isOpen} onDismiss={dismissPanel} UserId={props.UserId} />
+                <UpdateUserDetails isOpen={isOpen} onDismiss={_onDismiss} User={user} />
             }
         </div>
     );
