@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@fluentui/react': ^7.199.1
+  '@fluentui/react': 7.204.0
   '@microsoft/eslint-config-spfx': 1.17.2
   '@microsoft/eslint-plugin-spfx': 1.17.2
   '@microsoft/generator-sharepoint': 1.17.2
@@ -33,7 +33,6 @@ specifiers:
   typescript: 4.5.5
 
 dependencies:
-  '@fluentui/react': 7.204.0_9c907a7ccd27a2e2d0ee9de5366482d1
   '@microsoft/generator-sharepoint': 1.17.2
   '@microsoft/sp-component-base': 1.17.2_9c907a7ccd27a2e2d0ee9de5366482d1
   '@microsoft/sp-core-library': 1.17.2_9c907a7ccd27a2e2d0ee9de5366482d1
@@ -50,6 +49,7 @@ dependencies:
   tslib: 2.3.1
 
 devDependencies:
+  '@fluentui/react': 7.204.0_9c907a7ccd27a2e2d0ee9de5366482d1
   '@microsoft/eslint-config-spfx': 1.17.2_eslint@8.7.0+typescript@4.5.5
   '@microsoft/eslint-plugin-spfx': 1.17.2_eslint@8.7.0+typescript@4.5.5
   '@microsoft/rush-stack-compiler-4.5': 0.5.0_eslint@8.7.0
@@ -598,7 +598,6 @@ packages:
     dependencies:
       '@uifabric/set-version': 7.0.24
       tslib: 1.14.1
-    dev: false
 
   /@fluentui/date-time-utilities/8.5.12:
     resolution: {integrity: sha512-N4Dt7MDJiEASF73hz1kWkNfGLdGa+joi+f1b5Pi57PI4SBpZ89OGumT+Z/iyuYwcTdz5aVeq03wTJkLdJQo2Gg==}
@@ -612,7 +611,6 @@ packages:
     dependencies:
       '@uifabric/set-version': 7.0.24
       tslib: 1.14.1
-    dev: false
 
   /@fluentui/dom-utilities/2.2.11:
     resolution: {integrity: sha512-2tXfg7/9PXu9nfU72/P3o3waHEFEQtHUfQbVexUaYqNNAxMj6sOfsqpUx4vd5nPgO+grSWrl+spqlLN2yej51w==}
@@ -652,7 +650,6 @@ packages:
     resolution: {integrity: sha512-iT1bU56rKrKEOfODoW6fScY11qj3iaYrZ+z11T6fo5+TDm84UGkkXjLXJTE57ZJzg0/gbccHQWYv+chY7bJN8Q==}
     dependencies:
       tslib: 1.14.1
-    dev: false
 
   /@fluentui/keyboard-key/0.4.11:
     resolution: {integrity: sha512-TVB/EloWado9AVp1niChgcdDOQAHGP5B30Dinmtfe7zi8OnstwPoxwFP6dHJDdpLQ6ZEUTaEHViSzvewl7Chag==}
@@ -683,7 +680,6 @@ packages:
     transitivePeerDependencies:
       - '@types/react-dom'
       - react-dom
-    dev: false
 
   /@fluentui/react-focus/7.18.17_9c907a7ccd27a2e2d0ee9de5366482d1:
     resolution: {integrity: sha512-W+sLIhX7wLzMsJ0jhBrDAblkG3DNbRbF8UoSieRVdAAm7xVf5HpiwJ6tb6nGqcFOnpRh8y+fjyVM+dV3K6GNHA==}
@@ -703,7 +699,6 @@ packages:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       tslib: 1.14.1
-    dev: false
 
   /@fluentui/react-focus/8.8.27_4865287ef69aa4f3fc3f709d3560286e:
     resolution: {integrity: sha512-ejXL3UyVTMZr8D2m+3bZih2v1nhLLizQEkkkPIzR6Q1VInzGWV99vGlpd8TRoz8VtsmGaTo9d/xafiZoas0veg==}
@@ -756,7 +751,6 @@ packages:
       '@uifabric/set-version': 7.0.24
       react: 17.0.1
       tslib: 1.14.1
-    dev: false
 
   /@fluentui/react-theme-provider/0.19.16_9c907a7ccd27a2e2d0ee9de5366482d1:
     resolution: {integrity: sha512-Kf7z4ZfNLS/onaFL5eQDSlizgwy2ytn6SDyjEKV+9VhxIXdDtOh8AaMXWE7dsj1cRBfBUvuGPVnsnoaGdHxJ+A==}
@@ -779,7 +773,6 @@ packages:
     transitivePeerDependencies:
       - '@types/react-dom'
       - react-dom
-    dev: false
 
   /@fluentui/react-window-provider/1.0.6_9c907a7ccd27a2e2d0ee9de5366482d1:
     resolution: {integrity: sha512-m2HoxhU2m/yWxUauf79y+XZvrrWNx+bMi7ZiL6DjiAKHjTSa8KOyvicbOXd/3dvuVzOaNTnLDdZAvhRFcelOIA==}
@@ -795,7 +788,6 @@ packages:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       tslib: 1.14.1
-    dev: false
 
   /@fluentui/react-window-provider/2.2.15_4865287ef69aa4f3fc3f709d3560286e:
     resolution: {integrity: sha512-RraWvRe7wakpPJRBX2tlCV/cybOKiqLJ1UBLPNf5xq7ZIs0T0g/hh3G3Zb5teOeipjuRnl6srkdDUT9Dy9wrBg==}
@@ -824,7 +816,7 @@ packages:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       tslib: 1.14.1
-    dev: false
+    dev: true
 
   /@fluentui/react/8.109.10_9c907a7ccd27a2e2d0ee9de5366482d1:
     resolution: {integrity: sha512-bSOD3folZR8NYrOVCzk+jALBOaSLrPw/BalJGVxeknIzedVRpf3kfzDBpJ7xqr5BRAwcaGb+RBQoQ9OTNfV7iw==}
@@ -890,7 +882,6 @@ packages:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       tslib: 1.14.1
-    dev: false
 
   /@fluentui/theme/2.6.32_4865287ef69aa4f3fc3f709d3560286e:
     resolution: {integrity: sha512-UkDsCdQQTQb7Ib+tux2Octz3opTvnRDknXoVnC6yluQVd6ugM8eWDUphOgB7Vnsf1Ou7EhPKdIN6OHXHXuoIyA==}
@@ -3139,7 +3130,6 @@ packages:
     deprecated: This is a stub types definition. classnames provides its own type definitions, so you do not need this installed.
     dependencies:
       classnames: 2.3.2
-    dev: false
 
   /@types/connect-history-api-fallback/1.5.0:
     resolution: {integrity: sha512-4x5FkPpLipqwthjPsF7ZRbOv3uoLUFkTA9G9v583qi4pACvq0uTELrB8OLUzPWUI4IJIyvM85vzkV1nyiI2Lig==}
@@ -3993,7 +3983,6 @@ packages:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       tslib: 1.14.1
-    dev: false
 
   /@uifabric/icons/7.9.5_9c907a7ccd27a2e2d0ee9de5366482d1:
     resolution: {integrity: sha512-0e2fEURtR7sNqoGr9gU/pzcOp24B/Lkdc05s1BSnIgXlaL2QxRszfaEsl3/E9vsNmqA3tvRwDJWbtRolDbjCpQ==}
@@ -4007,14 +3996,12 @@ packages:
       - '@types/react-dom'
       - react
       - react-dom
-    dev: false
 
   /@uifabric/merge-styles/7.20.2:
     resolution: {integrity: sha512-cJy8hW9smlWOKgz9xSDMCz/A0yMl4mdo466pcGlIOn84vz+e94grfA7OoTuTzg3Cl0Gj6ODBSf1o0ZwIXYL1Xg==}
     dependencies:
       '@uifabric/set-version': 7.0.24
       tslib: 1.14.1
-    dev: false
 
   /@uifabric/react-hooks/7.16.4_9c907a7ccd27a2e2d0ee9de5366482d1:
     resolution: {integrity: sha512-k8RJYTMICWA6varT5Y+oCf2VDHHXN0tC2GuPD4I2XqYCTLaXtNCm4+dMcVA2x8mv1HIO7khvm/8aqKheU/tDfQ==}
@@ -4032,13 +4019,11 @@ packages:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       tslib: 1.14.1
-    dev: false
 
   /@uifabric/set-version/7.0.24:
     resolution: {integrity: sha512-t0Pt21dRqdC707/ConVJC0WvcQ/KF7tKLU8AZY7YdjgJpMHi1c0C427DB4jfUY19I92f60LOQyhJ4efH+KpFEg==}
     dependencies:
       tslib: 1.14.1
-    dev: false
 
   /@uifabric/styling/7.25.1_9c907a7ccd27a2e2d0ee9de5366482d1:
     resolution: {integrity: sha512-bd4QDYyb0AS0+KmzrB8VsAfOkxZg0dpEpF1YN5Ben10COmT8L1DoE4bEF5NvybHEaoTd3SKxpJ42m+ceNzehSw==}
@@ -4054,7 +4039,6 @@ packages:
       - '@types/react-dom'
       - react
       - react-dom
-    dev: false
 
   /@uifabric/utilities/7.38.2_9c907a7ccd27a2e2d0ee9de5366482d1:
     resolution: {integrity: sha512-5yM4sm142VEBg3/Q5SFheBXqnrZi9CNF5rjHNoex0GgGtG3AHPuS7U8gjm+/Io1MvbuCrn6lyyIw0MDvh1Ebkw==}
@@ -4073,7 +4057,6 @@ packages:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       tslib: 1.14.1
-    dev: false
 
   /@vue/compiler-core/3.3.4:
     resolution: {integrity: sha512-cquyDNvZ6jTbf/+x+AgM2Arrp6G4Dzbb0R64jiG804HRMfRiFXWI6kqUVqZ6ZR0bQhIoQjB4+2bhNtVwndW15g==}
@@ -5506,7 +5489,6 @@ packages:
 
   /classnames/2.3.2:
     resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
-    dev: false
 
   /clean-css-loader/3.0.0_webpack@4.44.2:
     resolution: {integrity: sha512-r99ZAb/PlHqGGK9CVMbd4q/v8jDU79Jgm9NA39Uoilt52+2wEBPPXmX0cMpV+avwwtUUDtjBBPyxCU2A7lnTbA==}
@@ -11358,7 +11340,6 @@ packages:
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
       tslib: 1.14.1
-    dev: false
 
   /on-finished/2.3.0:
     resolution: {integrity: sha512-ikqdkGAAyf/X/gPhXGvfgAytDZtDbr+bkNUJ0N9h5MI/dmdgCs3l6hoHrcUv41sRKew3jIwrp4qQDXiK99Utww==}
@@ -12545,7 +12526,6 @@ packages:
       object-assign: 4.1.1
       react: 17.0.1
       scheduler: 0.20.2
-    dev: false
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -12571,7 +12551,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-    dev: false
 
   /read-package-json/2.1.2:
     resolution: {integrity: sha512-D1KmuLQr6ZSJS0tW8hf3WGpRlwszJOXZ3E8Yd/DNRaM5d+1wVRZdHlpGBLAuovjr28LbWvjpWkBHMxpRGGjzNA==}
@@ -13163,7 +13142,6 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-    dev: false
 
   /schema-utils/1.0.0:
     resolution: {integrity: sha512-i27Mic4KovM/lnGsy8whRCHhc7VicJajAjTrYg11K9zfZXnYIt4k5F+kZkwjnrhKzLic/HLU4j11mjsz2G/75g==}

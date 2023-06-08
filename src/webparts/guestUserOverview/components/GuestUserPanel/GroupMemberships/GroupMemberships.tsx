@@ -1,6 +1,6 @@
 import * as React from 'react';
 import useGroupMemberships from '../../../../../hooks/UseGroupMemberships';
-import { Link, Persona, PersonaSize, Shimmer, ShimmerElementType, ShimmerElementsGroup, Text } from 'office-ui-fabric-react';
+import { Link, Persona, PersonaSize, Shimmer, ShimmerElementType, ShimmerElementsGroup, Text } from '@fluentui/react';
 
 export interface IGroupMembershipsProps {
     UserId: string;

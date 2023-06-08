@@ -1,6 +1,6 @@
 import * as React from 'react';
 import useSignIns from '../../../../../hooks/UseSignIns';
-import { DetailsList, IColumn, SelectionMode, ShimmeredDetailsList, Text } from 'office-ui-fabric-react';
+import { DetailsList, IColumn, SelectionMode, ShimmeredDetailsList, Text } from '@fluentui/react';
 import { DefaultColumnn } from '../../../../../util/TableHelpers';
 import { ISignInEntry } from '../../../../../models/ISignInEntry';
 

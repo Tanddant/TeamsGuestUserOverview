@@ -1,4 +1,4 @@
-import { ITextField, IconButton, MessageBar, MessageBarButton, MessageBarType, Spinner, SpinnerSize, TextField } from 'office-ui-fabric-react';
+import { ITextField, IconButton, MessageBar, MessageBarButton, MessageBarType, Spinner, SpinnerSize, TextField } from '@fluentui/react';
 import * as React from 'react';
 import { ApplicationContext } from '../../../../../util/ApplicationContext';
 

@@ -13,7 +13,6 @@
     "serve": "gulp bundle --custom-serve --max_old_space_size=4096 && fast-serve"
   },
   "dependencies": {
-    "@fluentui/react": "^7.199.1",
     "@microsoft/generator-sharepoint": "1.17.2",
     "@microsoft/sp-component-base": "1.17.2",
     "@microsoft/sp-core-library": "1.17.2",
@@ -30,7 +29,7 @@
     "tslib": "2.3.1"
   },
   "devDependencies": {
-    "@fluentui/react": "^7.199.1",
+    "@fluentui/react": "7.204.0",
     "@microsoft/eslint-config-spfx": "1.17.2",
     "@microsoft/eslint-plugin-spfx": "1.17.2",
     "@microsoft/rush-stack-compiler-4.5": "0.5.0",

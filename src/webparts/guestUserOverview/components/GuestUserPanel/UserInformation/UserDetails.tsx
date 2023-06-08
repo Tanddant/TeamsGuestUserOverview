@@ -1,6 +1,6 @@
 import * as React from "react";
 import useSignIns from "../../../../../hooks/UseSignIns";
-import { ActionButton, DetailsList, IColumn, Label, Link, SelectionMode, ShimmeredDetailsList, Spinner, SpinnerSize, Stack, Text } from 'office-ui-fabric-react';
+import { ActionButton, DetailsList, IColumn, Label, Link, SelectionMode, ShimmeredDetailsList, Spinner, SpinnerSize, Stack, Text } from '@fluentui/react';
 import useUser from "../../../../../hooks/UseUser";
 import { useBoolean } from "@fluentui/react-hooks";
 import { UpdateUserDetails } from "./UpdateUserDetails";

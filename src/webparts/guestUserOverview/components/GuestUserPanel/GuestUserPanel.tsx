@@ -8,7 +8,6 @@ import { GroupMemberships } from './GroupMemberships/GroupMemberships';
 import { RecentSignIns } from './RecentSignIns/RecentSignIns';
 import { PrettyDate } from './PrettyDate/PrettyDate';
 import { UserDetails } from './UserInformation/UserDetails';
-import { resultContent } from 'office-ui-fabric-react/lib/components/FloatingPicker/PeoplePicker/PeoplePicker.scss';
 import { CacheAction } from '../../../../providers/CacheManager';
 
 

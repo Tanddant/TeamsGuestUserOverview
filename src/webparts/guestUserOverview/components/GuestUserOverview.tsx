@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './GuestUserOverview.module.scss';
 import useGuests from '../../../hooks/UseGuests';
-import { DetailsList, DetailsListLayoutMode, SelectionMode, ShimmeredDetailsList, Spinner, Selection, Panel, SearchBox } from '@fluentui/react';
+import { DetailsList, DetailsListLayoutMode, SelectionMode, ShimmeredDetailsList, Spinner, Selection, Panel, SearchBox, IColumn, Text } from '@fluentui/react';
 import { GuestUserDetailListColumns, _onRenderRow } from './GuestUserDetailListColumns';
 import { IGuestUser } from '../../../models/IGuestUser';
 import { GuestUserPanel } from './GuestUserPanel/GuestUserPanel';

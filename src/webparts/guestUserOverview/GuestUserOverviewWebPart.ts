@@ -13,7 +13,7 @@ import { GuestUserOverview, IGuestUserOverviewProps } from './components/GuestUs
 import { ApplicationContext } from '../../util/ApplicationContext';
 import { graphfi, SPFx, ConsistencyLevel, Endpoint, GraphFI } from '@pnp/graph/presets/all'
 import { GraphProvider } from '../../providers/GraphProvider';
-import { initializeIcons } from 'office-ui-fabric-react';
+import { initializeIcons } from '@fluentui/react';
 import { PnPClientStorage } from "@pnp/core/storage";
 import { CacheManager } from '../../providers/CacheManager';
 
