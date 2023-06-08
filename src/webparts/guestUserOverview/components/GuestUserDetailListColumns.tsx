@@ -37,7 +37,7 @@ export const _onRenderRow: IDetailsListProps['onRenderRow'] = props => {
     const customStyles: Partial<IDetailsRowStyles> = {};
     if (props) {
         if ((props.item as IGuestUser).accountEnabled === false) {
-            customStyles.root = { backgroundColor: Color.Red };
+            customStyles.root = { backgroundColor: Color.Red + "35" };
         }
 
         return <DetailsRow {...props} styles={customStyles} />;

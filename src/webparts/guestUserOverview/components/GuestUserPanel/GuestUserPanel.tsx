@@ -48,6 +48,8 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                             <InvitationResender UserId={user.id} />
                         }
 
+                        {user.accountEnabled === false && <MessageBar messageBarType={MessageBarType.error}>This user is blocked from sign in!</MessageBar>}
+
                         <Persona text={user.displayName} secondaryText={user.mail} onRenderTertiaryText={_onRenderTertiaryText} size={PersonaSize.size72} />
 
                         <Pivot aria-label="Pivot" >
