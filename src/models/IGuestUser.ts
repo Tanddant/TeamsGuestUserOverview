@@ -13,7 +13,9 @@ export interface IGuestUser {
     lastPasswordChangeDateTime: Date;
     signInActivity?: {
         lastSignInDateTime: Date;
+        lastNonInteractiveSignInDateTime: Date;
     }
+    _lastSignInTime?: Date;
 
 }
 

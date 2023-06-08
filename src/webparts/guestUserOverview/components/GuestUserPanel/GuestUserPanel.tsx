@@ -8,6 +8,8 @@ import { GroupMemberships } from './GroupMemberships/GroupMemberships';
 import { RecentSignIns } from './RecentSignIns/RecentSignIns';
 import { PrettyDate } from './PrettyDate/PrettyDate';
 import { UserDetails } from './UserInformation/UserDetails';
+import { resultContent } from 'office-ui-fabric-react/lib/components/FloatingPicker/PeoplePicker/PeoplePicker.scss';
+import { CacheAction } from '../../../../providers/CacheManager';
 
 
 export interface IGuestUserPanelProps {
@@ -16,16 +18,20 @@ export interface IGuestUserPanelProps {
 }
 
 export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (props: React.PropsWithChildren<IGuestUserPanelProps>) => {
-    const { user, isLoading } = useUser(props.UserId);
-    const { GraphProvider } = React.useContext(ApplicationContext);
-    //Todo - get user details from Graph API (create useUser hook)
+    const { user, isLoading, pendingAction, reload } = useUser(props.UserId);
+    const { GraphProvider, Storage } = React.useContext(ApplicationContext);
 
     function _onRenderTertiaryText(personaProps: IPersonaProps): JSX.Element {
         return (
             <div style={{ display: 'flex', marginLeft: '-10px' }}>
                 <ActionButton iconProps={{ iconName: user.accountEnabled ? "Contact" : "BlockContact" }}
                     text={user.accountEnabled ? "Block user" : "Unblock user"}
-                    onClick={async () => { await GraphProvider.SetAccountStateForUserById(user.id, !user.accountEnabled); props.OnClose() }} />
+                    onClick={async () => {
+                        GraphProvider.SetAccountStateForUserById(user.id, !user.accountEnabled);
+                        user.accountEnabled ? Storage.BlockUser(user.id) : Storage.UnBlockUser(user.id);
+                        reload();
+                    }}
+                />
                 <ActionButton iconProps={{ iconName: "Delete" }} text='Delete user' />
                 <ActionButton iconProps={{ iconName: "NavigateExternalInline" }} text='Open in Entra' target='_blank' href={`https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/${user.id}`} />
             </div>);
@@ -49,6 +55,8 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                         }
 
                         {user.accountEnabled === false && <MessageBar messageBarType={MessageBarType.error}>This user is blocked from sign in!</MessageBar>}
+                        {pendingAction === CacheAction.BlockUser && user.accountEnabled === true && <MessageBar messageBarType={MessageBarType.error}>You've initiated a block of this user, it might take a few minutes</MessageBar>}
+                        {pendingAction === CacheAction.UnblockUser && user.accountEnabled === false && <MessageBar messageBarType={MessageBarType.success}>You've initiated an unblock of this user, it might take a few minutes</MessageBar>}
 
                         <Persona text={user.displayName} secondaryText={user.mail} onRenderTertiaryText={_onRenderTertiaryText} size={PersonaSize.size72} />
 
@@ -60,7 +68,7 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                                     <div style={{ display: 'grid', gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 10 }}>
                                         <PrettyDate date={user.createdDateTime} label='User Created' />
                                         <PrettyDate date={user.externalUserStateChangeDateTime} label='Invitation Accepted' override={user.externalUserState == ExternalUserState.Accepted ? null : "Not yet accepted"} />
-                                        <PrettyDate date={user.signInActivity?.lastSignInDateTime} label='Last sign-in' />
+                                        <PrettyDate date={user._lastSignInTime} label='Last sign-in' />
                                         <PrettyDate date={user.lastPasswordChangeDateTime} label='Last password change' />
                                     </div>
 

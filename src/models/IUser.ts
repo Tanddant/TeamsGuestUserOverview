@@ -25,7 +25,9 @@ export interface IUser {
     country: string;
     signInActivity?: {
         lastSignInDateTime: Date;
+        lastNonInteractiveSignInDateTime: Date;
     }
+    _lastSignInTime?: Date;
 }
 
 export const IUserSelects = ["accountEnabled", "id", "displayName", "createdDateTime", "externalUserState", "mail", "userPrincipalName", "signInActivity", "externalUserStateChangeDateTime", "lastPasswordChangeDateTime", "officeLocation", "givenName", "surname","businessPhones","city", "jobTitle", "department", "faxNumber", "mobilePhone", "streetAddress", "state", "postalCode", "country"]

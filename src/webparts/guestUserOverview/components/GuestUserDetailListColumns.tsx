@@ -88,9 +88,9 @@ export const GuestUserDetailListColumns: IColumn[] = [
         onRender: (item: IGuestUser) => <PrettyDate date={item.createdDateTime} />
     },
     {
-        ...DefaultColumnn("lastSignInDateTime"),
+        ...DefaultColumnn("_lastSignInTime"),
         name: "Last sign in",
-        onRender: (item: IGuestUser) => <Pill color={getLastSignInColorCode(item.signInActivity?.lastSignInDateTime)}><PrettyDate date={item.signInActivity?.lastSignInDateTime} /></Pill>
+        onRender: (item: IGuestUser) => <Pill color={getLastSignInColorCode(item._lastSignInTime)}><PrettyDate date={item._lastSignInTime} /></Pill>
     },
 ]
 

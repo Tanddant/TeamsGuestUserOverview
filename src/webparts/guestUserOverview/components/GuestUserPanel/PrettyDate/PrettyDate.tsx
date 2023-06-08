@@ -3,9 +3,6 @@ import { useId } from '@fluentui/react-hooks';
 import * as React from 'react';
 import { PrettyPrintDate, datediff } from '../../../../../util/DateHelpers';
 
-
-
-
 export interface IPrettyDateProps {
     date: Date;
     label?: string;
