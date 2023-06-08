@@ -4,16 +4,16 @@ import { IGuestUser, IGuestUserSelects } from '../models/IGuestUser';
 import * as React from 'react';
 import { ApplicationContext } from '../util/ApplicationContext';
 
-export default function useGuests() {
+export default function useGuests(dummycount: number = 10) {
     const [value, setValue] = useState<IGuestUser[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const { Graph, GraphProvider } = React.useContext(ApplicationContext);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { GraphProvider } = React.useContext(ApplicationContext);
 
 
     useEffect(() => {
         async function fetchData() {
             setIsLoading(true);
-            const users = await GraphProvider.GetGuests((partial) => setValue(partial));
+            const users = await GraphProvider.GetGuests((partial) => setValue([...partial, ...Array(dummycount)]));
             setValue(users);
             setIsLoading(false);
         }

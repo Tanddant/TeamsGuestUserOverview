@@ -31,15 +31,14 @@ export const GuestUserOverview: React.FunctionComponent<IGuestUserOverviewProps>
         UserId={selectedUserId}
       />
 
-      <Text variant='xLarge'>Guest user count: {Guests.length}</Text>
       <ShimmeredDetailsList
         items={Guests}
         columns={GuestUserDetailListColumns}
-        enableShimmer={isLoading}
+        enableShimmer={Guests.length == 0 && isLoading}
         shimmerLines={100}
         selection={selection}
         selectionPreservedOnEmptyClick={true}
-        selectionMode={SelectionMode.single}
+        selectionMode={isLoading ? SelectionMode.none : SelectionMode.single}
         onRenderRow={_onRenderRow}
       />
     </>
