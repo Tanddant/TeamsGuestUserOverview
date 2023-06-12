@@ -2,11 +2,13 @@
 
 > Beware this use the Azure Active Directory reporting API, if you have an  Office 365 E3/E5 you do not have this license, you'll need at least a Microsoft 365 E3/E5 which for some reason is different ([see here](https://learn.microsoft.com/en-us/answers/questions/1061639/graph-apis-which-require-p1-p2-license-are-failing))
 
+![HackTogether Contribution](https://img.shields.io/badge/HackTogether-Contribution-6264A7?style=for-the-badge&logoColor=white&logo=MicrosoftTeams)
 ## Summary
 
 This is a lightweight admin tool to get an overview of guest users in your tenant.
 
 The app was built during the [HackTogether: The Microsoft Teams Global Hack](https://aka.ms/hack-together-teams), as a entry
+
 
 Features include:
 
@@ -22,7 +24,9 @@ Features include:
 - [X] Get a quick indication of which users are active and which are not via simple color coding
 - [x] Edit the users profile information
 
-![Sample](assets/DemoGif.gif)
+# See the app in action here:
+
+[![Teams presence to Home Assistant](https://img.youtube.com/vi/XvGfuqFo34s/0.jpg)](https://www.youtube.com/watch?v=XvGfuqFo34s)
 
 ## Used SharePoint Framework Version
 
