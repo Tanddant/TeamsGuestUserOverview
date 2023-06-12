@@ -41,6 +41,7 @@ The app requires two graph permissions that you'll be prompted to grant when you
 
 - Directory.ReadWrite.All
 - AuditLog.Read.All 
+- User.ReadWrite.All
 
 ## Solution
 

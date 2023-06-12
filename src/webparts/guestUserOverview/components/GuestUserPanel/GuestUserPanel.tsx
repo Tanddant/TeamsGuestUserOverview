@@ -9,6 +9,8 @@ import { RecentSignIns } from './RecentSignIns/RecentSignIns';
 import { PrettyDate } from './PrettyDate/PrettyDate';
 import { UserDetails } from './UserInformation/UserDetails';
 import { CacheAction } from '../../../../providers/CacheManager';
+import { useBoolean } from '@fluentui/react-hooks';
+import { DeleteUser } from './UserInformation/DeleteUser';
 
 
 export interface IGuestUserPanelProps {
@@ -19,6 +21,7 @@ export interface IGuestUserPanelProps {
 export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (props: React.PropsWithChildren<IGuestUserPanelProps>) => {
     const { user, isLoading, pendingAction, reload } = useUser(props.UserId);
     const { GraphProvider, Storage } = React.useContext(ApplicationContext);
+    const [isDeletePanelOpen, { setTrue: showDeletePanel, setFalse: hideDeletePanel }] = useBoolean(false);
 
     function _onRenderTertiaryText(personaProps: IPersonaProps): JSX.Element {
         return (
@@ -31,7 +34,7 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                         reload();
                     }}
                 />
-                <ActionButton iconProps={{ iconName: "Delete" }} text='Delete user' />
+                <ActionButton iconProps={{ iconName: "Delete" }} text='Delete user' disabled={user.accountEnabled} onClick={showDeletePanel} />
                 <ActionButton iconProps={{ iconName: "NavigateExternalInline" }} text='Open in Entra' target='_blank' href={`https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserProfileMenuBlade/~/overview/userId/${user.id}`} />
             </div>);
     }
@@ -56,6 +59,7 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                         {user.accountEnabled === false && <MessageBar messageBarType={MessageBarType.error}>This user is blocked from sign in!</MessageBar>}
                         {pendingAction === CacheAction.BlockUser && user.accountEnabled === true && <MessageBar messageBarType={MessageBarType.error}>You've initiated a block of this user, it might take a few minutes</MessageBar>}
                         {pendingAction === CacheAction.UnblockUser && user.accountEnabled === false && <MessageBar messageBarType={MessageBarType.success}>You've initiated an unblock of this user, it might take a few minutes</MessageBar>}
+                        {pendingAction === CacheAction.DeleteUser && <MessageBar messageBarType={MessageBarType.error}>You've initiated an deletion of this user, it might take a few minutes</MessageBar>}
 
                         <Persona text={user.displayName} secondaryText={user.mail} onRenderTertiaryText={_onRenderTertiaryText} size={PersonaSize.size72} />
 
@@ -83,6 +87,10 @@ export const GuestUserPanel: React.FunctionComponent<IGuestUserPanelProps> = (pr
                                 </Stack>
                             </PivotItem>
                         </Pivot>
+                        {
+                            isDeletePanelOpen &&
+                            <DeleteUser User={user} isOpen={isDeletePanelOpen} onDismiss={async () => { hideDeletePanel(); reload(); }} />
+                        }
                     </Stack>
                 </>}
 

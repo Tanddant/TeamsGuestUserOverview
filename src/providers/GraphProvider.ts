@@ -8,6 +8,7 @@ import { BaseComponentContext } from "@microsoft/sp-component-base";
 import { AadHttpClient, MSGraphClientV3 } from "@microsoft/sp-http";
 
 export interface IGraphProvider {
+    DeleteUser(user: any): Promise<void>;
     UpdateIUser(user: any): Promise<void>;
     GetGuests(partialResults?: (partial: IGuestUser[]) => void): Promise<IGuestUser[]>;
     GetUserById(Id: string): Promise<IUser>;
@@ -33,24 +34,32 @@ export class GraphProvider implements IGraphProvider {
         this.Context = Context;
     }
 
+    public async DeleteUser(user: IUser): Promise<void>{
+        try {
+            await this.Graph.users.getById(user.id).delete();
+        } catch (e) {
+            alert(e.message)
+            throw e;
+        }
+    }
 
     public async UpdateIUser(user: IUser): Promise<void>{
         try {
             const result = await this.Graph.users.getById(user.id).update({
-                givenName: user?.givenName,
-                surname: user?.surname,
-                displayName: user?.displayName,
+                givenName: user?.givenName == '' ? null : user?.givenName,
+                surname: user?.surname == '' ? null : user?.surname,
+                displayName: user?.displayName == '' ? null : user?.displayName,
                 jobTitle: user?.jobTitle == '' ? null : user?.jobTitle,
-                department: user?.department,
-                officeLocation: user?.officeLocation,
+                department: user?.department == '' ? null : user?.department ,
+                officeLocation: user?.officeLocation == '' ? null : user?.officeLocation,
                 businessPhones: user?.businessPhones,
-                faxNumber: user?.faxNumber,
-                mobilePhone: user?.mobilePhone,
-                streetAddress: user?.streetAddress,
-                city: user?.city,
-                state: user?.state,
-                postalCode: user?.postalCode,
-                country: user?.country
+                faxNumber: user?.faxNumber == '' ? null : user?.faxNumber,
+                mobilePhone: user?.mobilePhone == '' ? null : user?.mobilePhone,
+                streetAddress: user?.streetAddress == '' ? null : user?.streetAddress,
+                city: user?.city == '' ? null : user?.city,
+                state: user?.state == '' ? null : user?.state,
+                postalCode: user?.postalCode == '' ? null : user?.postalCode,
+                country: user?.country == '' ? null : user?.country
             });
         } catch (e) {
             alert(e.message)
