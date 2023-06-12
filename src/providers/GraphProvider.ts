@@ -43,7 +43,7 @@ export class GraphProvider implements IGraphProvider {
         }
     }
 
-    public async UpdateIUser(user: IUser): Promise<void>{
+    public async UpdateIUser(user: IUser): Promise<void> {
         try {
             const result = await this.Graph.users.getById(user.id).update({
                 givenName: user?.givenName == '' ? null : user?.givenName,
@@ -127,9 +127,11 @@ export class GraphProvider implements IGraphProvider {
     public async GetSignInHistoryByUserId(Id: string): Promise<ISignInEntry[]> {
         const client = await this.Get_Raw_Client();
         const search = new URLSearchParams();
-        search.append("$filter", "userId eq '" + Id + "'and isInteractive eq true");
+        //Going back 7 days, going back further takes a long time, and is not needed for this purpose, but can be changed if needed.
+        //Request takes 15-20 seconds at no limit on dates, and 3-5 seconds with a 7 day limit.
+        search.append("$filter", [`userId eq '${Id}'`, 'isInteractive eq true', `createdDateTime ge ${new Date(new Date().setDate(new Date().getDate()-7)).toISOString()}`].join(' and '));
         search.append("$orderby", "createdDateTime desc");
-        search.append("$top", "100");
+        //search.append("$top", "100");
 
         try {
             const res: ISignInEntryResponse = await client.api("/auditLogs/signIns?" + search.toString()).get();
