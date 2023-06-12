@@ -18,9 +18,9 @@ Features include:
 - [x] Block/unblock guest users
 - [X] Open their profile in Entra
 - [X] Open AAD groups in Entra
-- [ ] Delete users
+- [x] Delete users
 - [X] Get a quick indication of which users are active and which are not via simple color coding
-- [ ] Edit the users profile information
+- [x] Edit the users profile information
 
 ![Sample](assets/DemoGif.gif)
 
